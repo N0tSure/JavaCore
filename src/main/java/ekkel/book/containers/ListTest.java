@@ -13,6 +13,20 @@ import java.util.*;
  */
 public class ListTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ListTest.class);
+
+    @Test
+    public void seqListTest() throws Exception {
+        SequentialList<String> sequentialList = new SequentialList<>();
+        ListIterator<String> listIterator = sequentialList.listIterator();
+
+        listIterator.add("S");
+        listIterator.add("B");
+        System.out.println(listIterator.next() + " end: " +  listIterator.hasNext());
+        System.out.println(listIterator.next() + " end: " +  listIterator.hasNext());
+        System.out.println(" end: " +  listIterator.hasNext());
+
+    }
+
     @Test
     public void iterationTest() {
         List<String> arrayList = new ArrayList<>(FlyweightMap.names(15));

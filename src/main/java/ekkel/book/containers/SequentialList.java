@@ -1,18 +1,15 @@
 package ekkel.book.containers;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
  * Created by cresh on 06.03.17.
  */
 public class SequentialList<T> {
-    private int size;
     private Node<T> sentinel;
 
-    public SequentialList(int size) {
-        this.size = size;
-        this.sentinel = new Node<T>();
+    public SequentialList() {
+        this.sentinel = new Node<>();
     }
 
     private static class Node<T> {
@@ -37,6 +34,8 @@ public class SequentialList<T> {
             return next;
         }
 
+
+
         public boolean end() {
             return t == null && next == null;
         }
@@ -53,52 +52,60 @@ public class SequentialList<T> {
 
     public ListIterator<T> listIterator() {
         return new ListIterator<T>() {
-            private int index = 0;
+            private Node<T> previous = null;
+            private Node<T> current = sentinel;
+            private int index = -1;
             @Override
             public boolean hasNext() {
-                return sentinel.end();
+                return !current.end();
             }
 
             @Override
             public T next() {
-                T result = sentinel.getT();
-                if (!sentinel.end()) sentinel = sentinel.getNext();
+                T result = current.getT();
+                previous = current;
+                current = current.getNext();
                 return result;
             }
 
             @Override
             public boolean hasPrevious() {
-                return false;
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public T previous() {
-                return null;
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public int nextIndex() {
-                return 0;
+                return index+1;
             }
 
             @Override
             public int previousIndex() {
-                return 0;
+                return index;
             }
 
             @Override
             public void remove() {
-
+                Node<T> next = current.getNext();
+                previous.next = next;
+                current = next;
             }
 
             @Override
             public void set(T t) {
-
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public void add(T t) {
-
+                current = new Node<>(t, current);
+                if (previous != null) {
+                    previous.next = current;
+                }
             }
         };
     }
