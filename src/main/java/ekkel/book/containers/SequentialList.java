@@ -1,15 +1,24 @@
 package ekkel.book.containers;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
  * Created by cresh on 06.03.17.
  */
 public class SequentialList<T> {
-    private Node<T> sentinel;
+    private Node<T> last;
 
-    public SequentialList() {
-        this.sentinel = new Node<>();
+
+    @SuppressWarnings("unchecked")
+    public SequentialList(Collection<T> c) {
+        this.last = new Node<>();
+
+        Object[] o = c.toArray();
+        for (int i = o.length - 1; i >= 0; i--) {
+            this.last = new Node<>((T) o[i], this.last);
+        }
     }
 
     private static class Node<T> {
@@ -53,7 +62,8 @@ public class SequentialList<T> {
     public ListIterator<T> listIterator() {
         return new ListIterator<T>() {
             private Node<T> previous = null;
-            private Node<T> current = sentinel;
+            private Node<T> lastPassed = null;
+            private Node<T> current = last;
             private int index = -1;
             @Override
             public boolean hasNext() {
@@ -63,7 +73,8 @@ public class SequentialList<T> {
             @Override
             public T next() {
                 T result = current.getT();
-                previous = current;
+                previous = lastPassed;
+                lastPassed = current;
                 current = current.getNext();
                 return result;
             }
@@ -90,9 +101,12 @@ public class SequentialList<T> {
 
             @Override
             public void remove() {
-                Node<T> next = current.getNext();
-                previous.next = next;
-                current = next;
+                if (previous == null && lastPassed == null)
+                    throw new IllegalStateException();
+                if (lastPassed == last)
+                    last = current;
+                else
+                    previous.next = current;
             }
 
             @Override
@@ -102,11 +116,21 @@ public class SequentialList<T> {
 
             @Override
             public void add(T t) {
-                current = new Node<>(t, current);
-                if (previous != null) {
-                    previous.next = current;
-                }
+                if (previous == null && lastPassed == null)
+                    throw new IllegalStateException();
+                lastPassed.next = new Node<>(t, current);
             }
         };
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("[ ");
+        Iterator<T> iterator = this.listIterator();
+        while (iterator.hasNext())
+            builder.append(iterator.next()).append(", ");
+
+        builder.delete(builder.length() - 2, builder.length());
+        return builder.append(" ]").toString();
     }
 }

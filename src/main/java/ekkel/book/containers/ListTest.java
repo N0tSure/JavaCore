@@ -16,14 +16,29 @@ public class ListTest {
 
     @Test
     public void seqListTest() throws Exception {
-        SequentialList<String> sequentialList = new SequentialList<>();
+        SequentialList<String> sequentialList = new SequentialList<>(FlyweightMap.names(5));
         ListIterator<String> listIterator = sequentialList.listIterator();
 
-        listIterator.add("S");
-        listIterator.add("B");
-        System.out.println(listIterator.next() + " end: " +  listIterator.hasNext());
-        System.out.println(listIterator.next() + " end: " +  listIterator.hasNext());
-        System.out.println(" end: " +  listIterator.hasNext());
+        int c = 0;
+        while (listIterator.hasNext()) {
+            String s = listIterator.next();
+            LOGGER.info("List count# {}, element: {}", c++, s);
+            if (s.equals("BURKINA FASO"))
+                listIterator.remove();
+        }
+
+        LOGGER.info("Removed: {}", sequentialList);
+        LOGGER.info("Removed: {}", sequentialList);
+
+        c = 0;
+        listIterator = sequentialList.listIterator();
+        while (listIterator.hasNext()) {
+            LOGGER.info("List count# {}, element: {}", ++c, listIterator.next());
+            if (c == 2)
+                listIterator.add("one");
+        }
+
+        LOGGER.info("Added: {}", sequentialList);
 
     }
 
