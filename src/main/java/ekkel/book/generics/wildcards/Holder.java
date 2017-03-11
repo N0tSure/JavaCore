@@ -5,14 +5,14 @@ import java.util.List;
 /**
  * Created by cresh on 12.12.16.
  */
-class Holder<T> {
+public class Holder<T> {
     private T t;
     Holder() {}
-    Holder(T t) {
+    protected Holder(T t) {
         this.t = t;
     }
 
-    T get() {
+    protected T get() {
         return t;
     }
 

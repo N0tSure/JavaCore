@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class Unsupported {
+class Unsupported {
   private static final Logger LOGGER = LoggerFactory.getLogger(Unsupported.class);
 
   static void test(String msg, List<String> list) {

@@ -6,7 +6,7 @@ import ekkel.book.util.FlyweightMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Lists {
+class Lists {
   private static boolean bool;
   private static String string;
   private static int i;
