@@ -1,1 +1,1 @@
-net.mindview.util: https://github.com/yidao620c/thinking-java/tree/master/src/main/java/net/mindview/util
+[net.mindview.util] https://github.com/yidao620c/thinking-java/tree/master/src/main/java/net/mindview/util

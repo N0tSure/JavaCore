@@ -43,36 +43,16 @@ public class CountingMapData extends AbstractMap<Integer, String> {
 
     @Override
     public Set<Map.Entry<Integer, String>> entrySet() {
-        return new EntrySet(size);
+        Set<Map.Entry<Integer, String>> entries = new LinkedHashSet<Map.Entry<Integer, String>>();
+        for (int i = 0; i < size; i++)
+            entries.add(new Entry(i));
+        return entries;
     }
 
-    private static class EntrySet extends AbstractSet<Map.Entry<Integer, String>> {
-        private int size;
 
-        private EntrySet(int size) {
-            this.size = size < 0 ? 0 : size;
-        }
-
-        @Override
-        public Iterator<Map.Entry<Integer, String>> iterator() {
-            return new Iterator<Map.Entry<Integer, String>>() {
-                private Entry entry = new Entry(-1);
-                @Override
-                public boolean hasNext() {
-                    return entry.index < size - 1;
-                }
-
-                @Override
-                public Map.Entry<Integer, String> next() {
-                    entry.index++;
-                    return entry;
-                }
-            };
-        }
-
-        @Override
-        public int size() {
-            return 0;
-        }
+    @Override
+    public int size() {
+        return size;
     }
+
 }
