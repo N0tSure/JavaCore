@@ -1,11 +1,11 @@
 package ekkel.book.containers;
 
+import ekkel.book.util.FlyweightMap;
 import ekkel.book.util.TextFile;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,11 +16,36 @@ public class MapTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(MapTest.class);
 
     @Test
+    public void slowMapTest() throws Exception {
+        SlowMap<String, String> map = new SlowMap<>();
+        map.putAll(FlyweightMap.capitals(15));
+        LOGGER.info("Slow map: {}", map);
+        LOGGER.info("Capital of Egypt: {}", map.get("EGYPT"));
+        LOGGER.info("Entries: {}", map.entrySet());
+    }
+
+    @Test
+    public void springDetector() throws Exception {
+        Map<Groundhog, Prediction> map = new HashMap<>();
+        for (int i = 0; i < 10; i++)
+            map.put(new Groundhog(i + 1), new Prediction());
+
+        LOGGER.info("All hogs: {}", map);
+        Groundhog groundhog = new Groundhog(3);
+        LOGGER.info("Looking up prediction for {}", groundhog);
+        if (map.containsKey(groundhog))
+            LOGGER.info("For {}: {}", groundhog, map.get(groundhog));
+        else
+            LOGGER.info("Key not found!");
+
+    }
+
+    @Test
     public void wordCounter() throws Exception {
         TextFile textFile = new TextFile("./src/main/resources/asci.sample", "\\W+");
         LOGGER.info("All words: {}", textFile);
 
-        AssociativeArray<String, Integer> counter = new AssociativeArray<>(textFile.size());
+        Map<String, Integer> counter = new SlowMap<>();
 
         for (String word : textFile) {
             Integer count = counter.get(word);
@@ -55,6 +80,7 @@ public class MapTest {
 
     @Test
     public void maps() throws Exception {
+        mapsTest(new SlowMap<>());
         mapsTest(new HashMap<>());
         mapsTest(new TreeMap<>());
         mapsTest(new LinkedHashMap<>());
