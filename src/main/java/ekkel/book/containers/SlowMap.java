@@ -9,6 +9,29 @@ public class SlowMap<K, V> extends AbstractMap<K, V> {
     private List<K> keys;
     private List<V> values;
 
+    private  class KeySet extends AbstractSet<K> {
+
+        @Override
+        public boolean remove(Object o) {
+            return keys.remove(o);
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return keys.contains(o);
+        }
+
+        @Override
+        public Iterator<K> iterator() {
+            return keys.iterator();
+        }
+
+        @Override
+        public int size() {
+            return keys.size();
+        }
+    }
+
     public SlowMap() {
         this.keys = new ArrayList<>();
         this.values = new ArrayList<>();
@@ -50,7 +73,11 @@ public class SlowMap<K, V> extends AbstractMap<K, V> {
         values.clear();
     }
 
-    // FIXME: 14.03.17 Fix entrySet().removeAll(Collection<? extends K)
+    @Override
+    public Set<K> keySet() {
+        return new KeySet();
+    }
+
     @Override
     public Set<Entry<K, V>> entrySet() {
         Set<Map.Entry<K, V>> entrySet = new HashSet<>();
