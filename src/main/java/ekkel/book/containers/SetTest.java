@@ -1,6 +1,7 @@
 package ekkel.book.containers;
 
 import ekkel.book.util.CollectionData;
+import ekkel.book.util.FlyweightMap;
 import ekkel.book.util.RandomGenerator;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -59,6 +60,8 @@ public class SetTest {
         test(new HashSet<>(), HashType.class);
         test(new LinkedHashSet<>(), HashType.class);
         test(new TreeSet<>(), TreeType.class);
+        test(new SlowSet<>(), HashType.class);
+        test(new SimpleHashSet<>(), HashType.class);
 
         test(new HashSet<>(), SetType.class);
         test(new HashSet<>(), TreeType.class);
@@ -78,11 +81,29 @@ public class SetTest {
         }
     }
 
+    @Test
+    public void setTest() throws Exception {
+        setTest(new SimpleHashSet<>());
+
+    }
+
+    private void setTest(Set<String> set) {
+        LOGGER.info(set.getClass().getSimpleName());
+        set.addAll(FlyweightMap.names(10));
+        set.addAll(FlyweightMap.names(10));
+        LOGGER.info(set.toString());
+        LOGGER.info("set.containsKey(ALGERIA): " + set.contains("ALGERIA"));
+        LOGGER.info("set.remove(\"ALGERIA\"): " + set.remove("ALGERIA"));
+        LOGGER.info(set.toString());
+        set.clear();
+        LOGGER.info("set.isEmpty(): " + set.isEmpty());
+    }
+
     private <T> void test(Set<T> set, Class<T> type) throws Exception {
         fill(set, type);
         fill(set, type);
         fill(set, type);
-        LOGGER.info("{}: {}", type.getSimpleName(), set);
+        LOGGER.info("{} [{}]: {}", set.getClass().getSimpleName(), type.getSimpleName(), set);
     }
 
     private <T> Set<T> fill(Set<T> set, Class<T> type) throws Exception {

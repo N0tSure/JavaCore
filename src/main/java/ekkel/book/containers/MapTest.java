@@ -15,6 +15,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MapTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(MapTest.class);
 
+
+    @Test
+    public void simpleHashMapTest() throws Exception {
+        SimpleHashMap<String, String> map = new SimpleHashMap<>();
+        map.putAll(FlyweightMap.capitals(25));
+        LOGGER.info("{}", map);
+        LOGGER.info("{}", map.get("CONGO"));
+        LOGGER.info("{}", map.entrySet());
+
+    }
+
     @Test
     public void slowMapTest() throws Exception {
         SlowMap<String, String> map = new SlowMap<>();
@@ -45,7 +56,7 @@ public class MapTest {
         TextFile textFile = new TextFile("./src/main/resources/asci.sample", "\\W+");
         LOGGER.info("All words: {}", textFile);
 
-        Map<String, Integer> counter = new SlowMap<>();
+        Map<String, Integer> counter = new SimpleHashMap<>();
 
         for (String word : textFile) {
             Integer count = counter.get(word);
@@ -80,13 +91,7 @@ public class MapTest {
 
     @Test
     public void maps() throws Exception {
-        mapsTest(new SlowMap<>());
-        mapsTest(new HashMap<>());
-        mapsTest(new TreeMap<>());
-        mapsTest(new LinkedHashMap<>());
-        mapsTest(new IdentityHashMap<>());
-        mapsTest(new ConcurrentHashMap<>());
-        mapsTest(new WeakHashMap<>());
+        mapsTest(new SimpleHashMap<>());
 
     }
 
