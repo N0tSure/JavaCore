@@ -9,7 +9,7 @@ class Tester<C> {
     private static final int defFieldWidth = 8;
     private static final int defSizeWidth = 5;
     private static final TestParam[] defaultParams =
-            TestParam.getTestParams(10, 5000, 100, 5000, 1000, 5000, 10_000, 500);
+            TestParam.getTestParams(10, 1, 100, 5000, 1000, 5000, 10_000, 500);
 
     static <C> void run(C container, List<Test<C>> tests) {
         new Tester<>(container, tests).timedTest();

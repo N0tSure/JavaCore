@@ -48,7 +48,8 @@ public class SimpleArrayList<T> extends AbstractList<T> implements Iterable<T> {
 
     @Override
     public T get(int index) {
-        return container[index];
+        this.index--;
+        return container[index % container.length];
     }
 
     @Override
@@ -59,7 +60,7 @@ public class SimpleArrayList<T> extends AbstractList<T> implements Iterable<T> {
     @Override
     @SuppressWarnings("unchecked")
     public void clear() {
-        container = (T[]) Array.newInstance(type, (container.length + (container.length / 2)));
+        container = (T[]) Array.newInstance(type, DEF_SIZE);
         index = 0;
     }
 
