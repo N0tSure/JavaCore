@@ -9,7 +9,7 @@ class Tester<C> {
     private static final int defFieldWidth = 8;
     private static final int defSizeWidth = 5;
     private static final TestParam[] defaultParams =
-            TestParam.getTestParams(10, 1, 100, 5000, 1000, 5000, 10_000, 500);
+            TestParam.getTestParams(10, 5000, 100, 5000, 1000, 5000, 10_000, 500);
 
     static <C> void run(C container, List<Test<C>> tests) {
         new Tester<>(container, tests).timedTest();
@@ -19,6 +19,9 @@ class Tester<C> {
         new Tester<>(container, tests, testParams).timedTest();
     }
 
+    static <C> Tester<C> getTester(C container, List<Test<C>> tests) {
+        return new Tester<C>(container, tests);
+    }
     C container;
     private int fieldWidth = defFieldWidth;
     private int sizeWidth = defSizeWidth;
@@ -40,16 +43,18 @@ class Tester<C> {
         return container;
     }
 
-    void setFieldWidth(int fieldWidth) {
+    Tester<C> setFieldWidth(int fieldWidth) {
         this.fieldWidth = fieldWidth;
+        return this;
     }
 
     void setSizeWidth(int sizeWidth) {
         this.sizeWidth = sizeWidth;
     }
 
-    void setHeadline(String headline) {
+    Tester<C> setHeadline(String headline) {
         this.headline = headline;
+        return this;
     }
 
     public void setTestParams(TestParam[] testParams) {
