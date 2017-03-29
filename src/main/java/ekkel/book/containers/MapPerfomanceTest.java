@@ -57,4 +57,24 @@ public class MapPerfomanceTest {
         Tester.getTester(new WeakHashMap<>(), tests).setFieldWidth(10).setHeadline("WeakHashMap").timedTest();
         Tester.getTester(new Hashtable<>(), tests).setFieldWidth(10).setHeadline("Hashtable").timedTest();
     }
+
+    @org.junit.Test
+    public void slowMapTest() throws Exception {
+        Tester.getTester(new SlowMap<>(), tests).setFieldWidth(10).setHeadline("SlowMap").timedTest();
+        Tester.getTester(new HashMap<>(), tests).setFieldWidth(10).setHeadline("HashMap").timedTest();
+
+    }
+
+    @org.junit.Test
+    public void loadFactorTest() throws Exception {
+
+        Tester.getTester(new HashMap<>(1600, 0.5f), tests).setFieldWidth(15).setHeadline("HashMap.50").timedTest();
+        Tester.getTester(new HashMap<>(1600, 0.6f), tests).setFieldWidth(15).setHeadline("HashMap.60").timedTest();
+        Tester.getTester(new HashMap<>(1600, 0.7f), tests).setFieldWidth(15).setHeadline("HashMap.70").timedTest();
+        Tester.getTester(new HashMap<>(1600, 0.75f), tests).setFieldWidth(15).setHeadline("HashMap.75").timedTest();
+        Tester.getTester(new HashMap<>(1600, 0.80f), tests).setFieldWidth(15).setHeadline("HashMap.80").timedTest();
+        Tester.getTester(new HashMap<>(1600, 0.90f), tests).setFieldWidth(15).setHeadline("HashMap.90").timedTest();
+        Tester.getTester(new HashMap<>(1600, 0.95f), tests).setFieldWidth(15).setHeadline("HashMap.95").timedTest();
+
+    }
 }
