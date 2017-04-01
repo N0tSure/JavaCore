@@ -91,7 +91,7 @@ public class MapTest {
 
     @Test
     public void maps() throws Exception {
-        mapsTest(new SlowMap<>());
+        mapsTest(new SimpleHashMap<>());
 
     }
 

@@ -10,13 +10,16 @@ import java.util.*;
  */
 public class SimpleHashMap<K, V> extends AbstractMap<K, V> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleHashMap.class);
-    private static final int SIZE = 997;
+    private static final int DEF_SIZE = 997;
+    private static final float DEF_LOAD_FACTOR = 0.75f;
+    private final float LOAD_FACTOR;
 
     private MapEntry<K, V>[] buckets;
 
     @SuppressWarnings("unchecked")
     public SimpleHashMap() {
-        buckets = new MapEntry[SIZE];
+        buckets = new MapEntry[DEF_SIZE];
+        LOAD_FACTOR = DEF_LOAD_FACTOR;
     }
 
     @Override
@@ -24,7 +27,7 @@ public class SimpleHashMap<K, V> extends AbstractMap<K, V> {
         V oldValue = null;
         boolean found = false;
         MapEntry<K, V> bucket;
-        int index = Math.abs(key.hashCode()) % SIZE;
+        int index = getIndex(key.hashCode());
 
         if (buckets[index] == null)
             buckets[index] = new MapEntry<>();
@@ -42,18 +45,19 @@ public class SimpleHashMap<K, V> extends AbstractMap<K, V> {
             bucket = bucket.getNext();
         }
 
-//        LOGGER.info("Amount of probes for {}:{} is {}", key, value, probes);
 
         if (!found) {
             buckets[index] = new MapEntry<>(key, value, buckets[index]);
         }
+
+        rehash();
 
         return oldValue;
     }
 
     @Override
     public boolean containsKey(Object key) {
-        int index = Math.abs(key.hashCode()) % SIZE;
+        int index = getIndex(key.hashCode());
         MapEntry<K, V> bucket = buckets[index];
         if (bucket != null) {
             while (bucket.hasNext()) {
@@ -68,12 +72,13 @@ public class SimpleHashMap<K, V> extends AbstractMap<K, V> {
 
     @Override
     public V get(Object key) {
-        int index = Math.abs(key.hashCode()) % SIZE;
+        int index = getIndex(key.hashCode());
         MapEntry<K, V> bucket = buckets[index];
         if (bucket != null) {
             while (bucket.hasNext()) {
                 if (bucket.getKey().equals(key))
                     return bucket.getValue();
+                bucket = bucket.getNext();
             }
         }
 
@@ -84,7 +89,7 @@ public class SimpleHashMap<K, V> extends AbstractMap<K, V> {
     @Override
     public V remove(Object key) {
         V oldValue = null;
-        int index = Math.abs(key.hashCode()) % SIZE;
+        int index = getIndex(key.hashCode());
         MapEntry<K, V> bucket = buckets[index];
         MapEntry<K, V> oldPair = null;
 
@@ -110,7 +115,7 @@ public class SimpleHashMap<K, V> extends AbstractMap<K, V> {
 
     @Override
     public void clear() {
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < DEF_SIZE; i++) {
             if (buckets[i] != null)
                 buckets[i] = new MapEntry<>();
         }
@@ -130,5 +135,25 @@ public class SimpleHashMap<K, V> extends AbstractMap<K, V> {
         }
 
         return entries;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void rehash() {
+
+        int count = 0;
+        for (MapEntry<K, V> bucket : buckets)
+            if (bucket != null)
+                count++;
+
+        if (count / buckets.length > LOAD_FACTOR) {
+
+            MapEntry<K, V>[] result = new MapEntry[buckets.length + buckets.length / 2];
+            System.arraycopy(buckets, 0, result, 0, buckets.length);
+            buckets = result;
+        }
+    }
+
+    private int getIndex(int hash) {
+        return Math.abs(hash) % buckets.length;
     }
 }

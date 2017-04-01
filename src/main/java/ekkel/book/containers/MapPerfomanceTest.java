@@ -35,17 +35,17 @@ public class MapPerfomanceTest {
                 return loops * span;
             }
         });
-        tests.add(new Test<Map<Integer,Integer>>("iterate") {
-            int test(Map<Integer,Integer> map, TestParam tp) {
-                int loops = tp.getLoops() * 10;
-                for(int i = 0; i < loops; i ++) {
-                    Iterator it = map.entrySet().iterator();
-                    while(it.hasNext())
-                        it.next();
-                }
-                return loops * map.size();
-            }
-        });
+//        tests.add(new Test<Map<Integer,Integer>>("iterate") {
+//            int test(Map<Integer,Integer> map, TestParam tp) {
+//                int loops = tp.getLoops() * 10;
+//                for(int i = 0; i < loops; i ++) {
+//                    Iterator it = map.entrySet().iterator();
+//                    while(it.hasNext())
+//                        it.next();
+//                }
+//                return loops * map.size();
+//            }
+//        });
     }
 
     @org.junit.Test
@@ -61,6 +61,15 @@ public class MapPerfomanceTest {
     @org.junit.Test
     public void slowMapTest() throws Exception {
         Tester.getTester(new SlowMap<>(), tests).setFieldWidth(10).setHeadline("SlowMap").timedTest();
+        Tester.getTester(new HashMap<>(), tests).setFieldWidth(10).setHeadline("HashMap").timedTest();
+
+    }
+
+    @org.junit.Test
+    public void simpleHashMapTest() throws Exception {
+        Tester.getTester(new SimpleHashMap<>(), tests).setFieldWidth(10).setHeadline("SimpleHashMap").timedTest();
+        Tester.getTester(new SimpleHashMap<>(), tests).setFieldWidth(10).setHeadline("SimpleHashMap").timedTest();
+        Tester.getTester(new SimpleHashMap<>(), tests).setFieldWidth(10).setHeadline("SimpleHashMap").timedTest();
         Tester.getTester(new HashMap<>(), tests).setFieldWidth(10).setHeadline("HashMap").timedTest();
 
     }
