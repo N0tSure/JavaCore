@@ -3,6 +3,8 @@ package ekkel.book.containers;
 import ekkel.book.util.Generator;
 import org.junit.*;
 import org.junit.Test;
+import org.junit.rules.TestWatcher;
+import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,10 +15,12 @@ import java.util.stream.Stream;
 /**
  * Created by cresh on 02.04.17.
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StringHolderTest {
     private final static Logger LOGGER = LoggerFactory.getLogger(StringHolderTest.class);
 
-    // TODO: 02.04.17 TEST RULE
+    @Rule
+    public TestWatcher testWatcher = new SimpleTestWatcher();
 
     @org.junit.Test
     public void sortingTest() {
