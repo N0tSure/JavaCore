@@ -1,0 +1,2 @@
+# JavaCore
+Learning Java Core
