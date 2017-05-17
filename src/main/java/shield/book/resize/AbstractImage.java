@@ -2,7 +2,7 @@ package shield.book.resize;
 
 /**
  * Created on 17.05.2017.
- *
+ * Basic realisation of image
  * @author Artemis A. Sirosh
  */
 public abstract class AbstractImage implements Image {

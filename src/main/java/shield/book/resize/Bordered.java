@@ -2,7 +2,7 @@ package shield.book.resize;
 
 /**
  * Created on 16 May, 2017.
- *
+ * Parallelogram with inner unfilled plane
  * @author Artemis A. Sirosh
  */
 class Bordered extends AbstractImage {

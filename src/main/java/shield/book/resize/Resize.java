@@ -5,7 +5,7 @@ import static java.lang.Math.floor;
 
 /**
  * Created on 16 May, 2017.
- *
+ * Images resizer
  * @author Artemis A. Sirosh
  */
 public class Resize {

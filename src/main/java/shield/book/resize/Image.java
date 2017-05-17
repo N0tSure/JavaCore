@@ -2,7 +2,7 @@ package shield.book.resize;
 
 /**
  * Created on 16 May, 2017.
- *
+ * demonstration of image
  * @author Artemis A. Sirosh
  */
 public interface Image {
