@@ -7,6 +7,9 @@ package shield.book.resize;
  */
 public interface Image {
 
+    char DARK = 'H';
+    char LIGHT = '_';
+
     int getWidth();
     int getHeight();
     char getPixel(int x, int y);
