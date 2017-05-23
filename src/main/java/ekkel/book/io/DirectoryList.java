@@ -17,9 +17,7 @@ public class DirectoryList {
         if (args.length == 0)
             list = path.list();
         else
-            list = path.list((dir, name) ->
-                    Pattern.compile(args[0]).matcher(name).matches()
-            );
+            list = path.list(new TextFilter(args[0]));
 
         if (list != null) {
             Arrays.sort(list, String::compareToIgnoreCase);
