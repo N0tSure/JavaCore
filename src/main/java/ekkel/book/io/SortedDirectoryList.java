@@ -14,16 +14,16 @@ import java.util.stream.Collectors;
  *
  * @author Artemis A. Sirosh
  */
-public class SortedDirectoryList {
+class SortedDirectoryList {
 
     private final File directory;
 
-    public SortedDirectoryList(File directory) {
+    SortedDirectoryList(File directory) {
         checkArgument(directory.exists(), String.format("%s not exists", directory.getName()));
         this.directory = directory;
     }
 
-    public SortedDirectoryList(String directoryName) {
+    SortedDirectoryList(String directoryName) {
         this(new File(checkNotNull(directoryName, "Directory must be not null")));
     }
 

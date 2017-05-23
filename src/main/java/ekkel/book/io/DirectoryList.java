@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * Prints files, whose contains directory given in params
  * @author Artemis A. Sirosh
  */
-public class DirectoryList {
+class DirectoryList {
     public static void main(String[] args) {
         File path = new File("./src/main/java/ekkel/book/generics");
         String[] list;

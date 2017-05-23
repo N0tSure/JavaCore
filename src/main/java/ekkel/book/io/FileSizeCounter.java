@@ -12,11 +12,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author Artemis A. Sirosh
  */
-public class FileSizeCounter extends HashMap<String, Long> {
+class FileSizeCounter extends HashMap<String, Long> {
 
     private final File directory;
 
-    public FileSizeCounter(File directory) {
+    FileSizeCounter(File directory) {
         checkArgument(directory.exists(), String.format("%s not exists", directory.getName()));
         this.directory = directory;
         fileCreator(directory.list())
@@ -25,7 +25,7 @@ public class FileSizeCounter extends HashMap<String, Long> {
                 .forEach(file -> this.put(file.getName(), file.length()));
     }
 
-    public FileSizeCounter(String directoryName) {
+    FileSizeCounter(String directoryName) {
         this(new File(checkNotNull(directoryName, "Directory name must not be null")));
     }
 
