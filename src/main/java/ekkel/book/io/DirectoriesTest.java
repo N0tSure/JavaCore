@@ -16,4 +16,20 @@ public class DirectoriesTest {
     public void directoryTest() throws Exception {
         LOGGER.info(Directory.walk(".", "T.*\\.class").toString());
     }
+
+    @Test
+    public void fileProcessingTest() throws Exception {
+        new ProcessFiles(
+                file -> LOGGER.info("{}", file),
+                ".*\\.java"
+        ).start();
+
+    }
+
+    @Test
+    public void countSizeOfTree() throws Exception {
+        TreeInfo info = new FilesSizeInfo();
+        info.addAll(Directory.walk(".", ".*\\.java"));
+        LOGGER.info("{}", info);
+    }
 }
