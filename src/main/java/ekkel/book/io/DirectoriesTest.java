@@ -5,9 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -113,5 +111,28 @@ public class DirectoriesTest {
         for (File file : deletedFiles) {
             LOGGER.info("Deleted file:\n{}", MakeDirectories.fileData(file));
         }
+    }
+
+    @Test
+    public void searchFileByDate() throws Exception {
+        Calendar calendar = new GregorianCalendar(2017, 3, 20);
+        List<File> lastModifiedAfter = new ArrayList<>();
+
+        new ProcessFiles(
+                file -> {
+                    if (file.lastModified() > calendar.getTimeInMillis()) {
+                        lastModifiedAfter.add(file);
+                    }
+                },
+                ".*\\.java"
+        ).start();
+
+        lastModifiedAfter.sort(Comparator.comparingLong(File::lastModified));
+
+        for (File file : lastModifiedAfter) {
+            LOGGER.info("{} : {}", file, new Date(file.lastModified()));
+        }
+
+
     }
 }
