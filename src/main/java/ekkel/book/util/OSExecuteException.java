@@ -31,6 +31,10 @@ public class OSExecuteException extends RuntimeException {
 
     @Override
     public String toString() {
-        return ;
+        StringBuilder result = new StringBuilder();
+        errors.forEach(error -> result.append(error).append('\n'));
+        result.append(super.toString());
+
+        return result.toString();
     }
 }

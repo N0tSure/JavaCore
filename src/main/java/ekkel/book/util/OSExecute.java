@@ -13,18 +13,17 @@ import java.util.List;
  */
 public class OSExecute {
 
-    public static List<String> command(String command) {
+    public static void command(String command) {
         List<String> errors = new ArrayList<>();
         try {
 
             Process process = new ProcessBuilder(command.split(" ")).start();
+            process.waitFor();
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                 String s;
                 while ((s = reader.readLine()) != null)
                     System.out.println(s);
-            } catch (IOException exc) {
-                throw exc;
             }
 
 
@@ -32,10 +31,16 @@ public class OSExecute {
                 String s;
                 while ((s = errorReader.readLine()) != null)
                     errors.add(s);
-            } catch (IOException exc) {
-                throw exc;
             }
 
+        } catch (IOException | InterruptedException exc ) {
+            if (!errors.isEmpty())
+                throw new OSExecuteException(exc, errors);
+
+            throw new RuntimeException(exc);
         }
+
+        if (!errors.isEmpty())
+            throw new OSExecuteException(errors);
     }
 }
