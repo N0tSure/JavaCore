@@ -16,3 +16,5 @@ Vim script, which define some hot keys for past it [there](https://gist.github.c
 
 * [Reference to `net.mindview.util`](https://github.com/yidao620c/thinking-java/tree/master/src/main/java/net/mindview/util)
 * [Guava Wiki](https://github.com/google/guava/wiki)
+* [Quick start OpenJDK JMH](http://java-performance.info/jmh/)
+* [More About OpenJDK JMH](http://tutorials.jenkov.com/java-performance/jmh.html)
