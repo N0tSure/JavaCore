@@ -1,16 +1,19 @@
-package shield.book.test02;
+package test02;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 /**
- * This is solution of problem
+ * <p>
+ *     Searching character using streams, which created
+ *     directly from file name
+ * </p>
+ * <p>
+ *     <em>Note:</em> Have some issues with file closing
+ * </p>
  *
  */
-public class QuickSearcher implements CharacterSearcher {
+public class QuickCounter implements CharacterCounter {
 
     @Override
     public int countCharacters(char keyChar, String target) throws Exception {

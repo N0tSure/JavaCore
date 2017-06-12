@@ -1,13 +1,16 @@
-package shield.book.test02;
+package test02;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * Standard and obvious realization of CharacterSearcher
+ * <p>
+ *     Standard and obvious realization of CharacterCounter,
+ *     used how reference
+ * </p>
  */
-public class ObviousSearcher implements CharacterSearcher {
+public class ObviousCounter implements CharacterCounter {
     @Override
     public int countCharacters(char keyChar, String path) {
         int counter = 0;

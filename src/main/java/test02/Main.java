@@ -1,6 +1,4 @@
-package shield.book.test02;
-
-import java.io.IOException;
+package test02;
 
 /**
  * Main class of test.task 2
@@ -13,7 +11,7 @@ public class Main {
         }
         char target = args[0].charAt(0);
 
-        CharacterSearcher searcher = new QuickSearcher();
+        CharacterCounter searcher = new QuickCounter();
         System.out.printf("Results for %c: %d",target, searcher.countCharacters(target, args[1]));
     }
 }
