@@ -28,12 +28,12 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Created on 04 Jun, 2017.
- *
+ * Using for large sample file generation
  * @author Artemis A. Sirosh
  */
 public class LargeSampleCreation {
     private static final Logger LOGGER = LoggerFactory.getLogger(LargeSampleCreation.class);
-    private static final int FILE_LENGTH = 0x8ffffff;
+    private static final int FILE_LENGTH = 0x8fffff;
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
