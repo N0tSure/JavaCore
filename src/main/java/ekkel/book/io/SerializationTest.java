@@ -80,4 +80,12 @@ public class SerializationTest {
             LOGGER.info("{} : {}", s, head);
         }
     }
+
+    @Test
+    public void freezeAlien() throws Exception {
+        try (ObjectOutput output = new ObjectOutputStream(new FileOutputStream("x.file"))) {
+            Alien quellek = new Alien();
+            output.writeObject(quellek);
+        }
+    }
 }
