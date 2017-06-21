@@ -100,6 +100,16 @@ public class SerializationControlTest {
         System.out.println("Original:");
         System.out.println(control);
 
-        try (ObjectOutputStream stream = new ObjectOutputStream())
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             ObjectOutputStream stream = new ObjectOutputStream(byteArrayOutputStream)) {
+
+            stream.writeObject(control);
+            buffer = byteArrayOutputStream.toByteArray();
+        }
+
+        try (ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(buffer))) {
+            control = (SerialControl) inputStream.readObject();
+            System.out.println("Recovered: " + control);
+        }
     }
 }

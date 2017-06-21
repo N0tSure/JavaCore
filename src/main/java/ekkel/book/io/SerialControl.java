@@ -5,6 +5,7 @@ import com.google.common.base.MoreObjects;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -13,7 +14,7 @@ import java.io.ObjectOutputStream;
  *
  * @author Artemis A. Sirosh
  */
-class SerialControl {
+class SerialControl implements Serializable {
 
     private String one;
     private transient String another;
