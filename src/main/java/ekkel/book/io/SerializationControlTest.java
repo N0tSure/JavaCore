@@ -91,4 +91,15 @@ public class SerializationControlTest {
         }
 
     }
+
+    @Test
+    public void serialControlled() throws Exception {
+        byte[] buffer = null;
+
+        SerialControl control = new SerialControl("test_1", "test_2");
+        System.out.println("Original:");
+        System.out.println(control);
+
+        try (ObjectOutputStream stream = new ObjectOutputStream())
+    }
 }
