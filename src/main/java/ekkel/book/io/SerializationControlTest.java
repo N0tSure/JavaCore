@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.*;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -65,6 +67,27 @@ public class SerializationControlTest {
             System.out.println("Recovering object: ");
             another = (Another) inputStream.readObject();
             System.out.println("Recovered: " + another);
+        }
+
+    }
+
+    @Test
+    public void transientUsage() throws Exception {
+
+        Logon logon = new Logon("Hulk", "myLittlePony");
+        System.out.println("Original: " + logon);
+
+        File tmp = temporaryFolder.newFile();
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(tmp))) {
+            outputStream.writeObject(logon);
+        }
+
+        TimeUnit.SECONDS.sleep(5);
+
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(tmp))) {
+            logon = (Logon) inputStream.readObject();
+            System.out.println("Recovering at " + new Date());
+            System.out.println("Recovered: " + logon);
         }
 
     }
