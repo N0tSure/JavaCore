@@ -1,7 +1,5 @@
 package ekkel.book.containers;
 
-import org.junit.*;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +16,7 @@ public class ReferenceTest {
 
     private ReferenceQueue<VeryBig> referenceQueue = new ReferenceQueue<>();
 
-    @Test
+    @org.junit.Test
     public void canonicalMapping() throws Exception {
         int size = 1_000_000;
         Key[] keys = new Key[size];

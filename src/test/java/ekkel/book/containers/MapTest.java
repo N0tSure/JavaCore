@@ -2,12 +2,10 @@ package ekkel.book.containers;
 
 import ekkel.book.util.FlyweightMap;
 import ekkel.book.util.TextFile;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by cresh on 12.03.17.
@@ -16,7 +14,7 @@ public class MapTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(MapTest.class);
 
 
-    @Test
+    @org.junit.Test
     public void simpleHashMapTest() throws Exception {
         SimpleHashMap<String, String> map = new SimpleHashMap<>();
         map.putAll(FlyweightMap.capitals(25));
@@ -26,7 +24,7 @@ public class MapTest {
 
     }
 
-    @Test
+    @org.junit.Test
     public void slowMapTest() throws Exception {
         SlowMap<String, String> map = new SlowMap<>();
         map.putAll(FlyweightMap.capitals(15));
@@ -35,7 +33,7 @@ public class MapTest {
         LOGGER.info("Entries: {}", map.entrySet());
     }
 
-    @Test
+    @org.junit.Test
     public void springDetector() throws Exception {
         Map<Groundhog, Prediction> map = new HashMap<>();
         for (int i = 0; i < 10; i++)
@@ -51,7 +49,7 @@ public class MapTest {
 
     }
 
-    @Test
+    @org.junit.Test
     public void wordCounter() throws Exception {
         TextFile textFile = new TextFile("./src/main/resources/asci.sample", "\\W+");
         LOGGER.info("All words: {}", textFile);
@@ -71,7 +69,7 @@ public class MapTest {
 
     }
 
-    @Test
+    @org.junit.Test
     public void associativeTest() {
         AssociativeArray<String, String> map = new AssociativeArray<>(6);
         map.put("sky", "blue");
@@ -89,7 +87,7 @@ public class MapTest {
         LOGGER.info(map.get("ocean"));
     }
 
-    @Test
+    @org.junit.Test
     public void maps() throws Exception {
         mapsTest(new SimpleHashMap<>());
 

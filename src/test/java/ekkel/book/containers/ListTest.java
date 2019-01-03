@@ -1,7 +1,7 @@
 package ekkel.book.containers;
 
 import ekkel.book.util.FlyweightMap;
-import org.junit.Test;
+
 import static org.junit.Assert.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ import java.util.*;
 public class ListTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ListTest.class);
 
-    @Test
+    @org.junit.Test
     public void seqListTest() throws Exception {
         SequentialList<String> sequentialList = new SequentialList<>(FlyweightMap.names(5));
         ListIterator<String> listIterator = sequentialList.listIterator();
@@ -42,7 +42,7 @@ public class ListTest {
 
     }
 
-    @Test
+    @org.junit.Test
     public void iterationTest() {
         List<String> arrayList = new ArrayList<>(FlyweightMap.names(15));
         List<String> linkedList = new LinkedList<>(FlyweightMap.names(15));

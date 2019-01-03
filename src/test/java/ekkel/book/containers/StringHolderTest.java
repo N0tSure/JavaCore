@@ -34,7 +34,7 @@ public class StringHolderTest {
         LOGGER.info("After second string based sort: {}", holders);
     }
 
-    @Test
+    @org.junit.Test
     public void collectionElementUsage() throws Exception {
         List<Holder> holders = Holder.getHolderStream().limit(8).collect(Collectors.toList());
 

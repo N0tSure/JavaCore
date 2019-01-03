@@ -4,7 +4,7 @@ import ekkel.book.util.CountingGenerator;
 import ekkel.book.util.CountingIntegerList;
 import ekkel.book.util.FlyweightMap;
 import ekkel.book.util.MapData;
-import org.junit.Test;
+
 import static org.junit.Assert.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class MapDataTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(MapDataTest.class);
 
-    @Test
+    @org.junit.Test
     public void listsTest() throws Exception {
         List<String> array = new ArrayList<>(FlyweightMap.names(8));
         List<String> linked = new LinkedList<>(FlyweightMap.names(8));
@@ -43,7 +43,7 @@ public class MapDataTest {
 
     }
 
-    @Test
+    @org.junit.Test
     public void aCountries() throws Exception {
         Set<String> countriesNames = new HashSet<>();
         for (String name : FlyweightMap.names())
@@ -58,20 +58,20 @@ public class MapDataTest {
         assertTrue(countriesNames.containsAll(anotherWay));
     }
 
-    @Test
+    @org.junit.Test
     public void countingMapTest() throws Exception {
         LOGGER.info("Counting map : {}", new CountingMapData(30));
 
     }
 
-    @Test
+    @org.junit.Test
     public void countingListTest() throws Exception {
         Marker marker = MarkerFactory.getMarker("New marker");
         LOGGER.info(marker, "Counting: {}", new CountingIntegerList(30));
 
     }
 
-    @Test
+    @org.junit.Test
     public void flyWeightTest() {
         LOGGER.info(FlyweightMap.capitals().toString());
         LOGGER.info(FlyweightMap.names(10).toString());
@@ -87,7 +87,7 @@ public class MapDataTest {
         LOGGER.info("{}", FlyweightMap.capitals().get("BRAZIL"));
     }
 
-    @Test
+    @org.junit.Test
     public void mapDataTest() {
         LOGGER.info(MapData.map(new Letters(), 9).toString());
         LOGGER.info(MapData.map(
@@ -98,7 +98,7 @@ public class MapDataTest {
         LOGGER.info(MapData.map(new Letters(), "Pop").toString());
     }
 
-    @Test
+    @org.junit.Test
     public void unsupportedTest() throws Exception {
 
 

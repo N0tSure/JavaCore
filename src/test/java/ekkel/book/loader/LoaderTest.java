@@ -1,4 +1,4 @@
-package shield.book.loader;
+package ekkel.book.loader;
 
 import org.junit.Assert;
 import org.junit.Test;

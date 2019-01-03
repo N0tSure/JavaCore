@@ -25,7 +25,7 @@ public class UtilitiesTest {
     private static Collection<String> data = (FlyweightMap.names(6));
 
 
-    @Test(expected = ConcurrentModificationException.class)
+    @org.junit.Test(expected = ConcurrentModificationException.class)
     public void failFastTest() throws Exception {
         Collection<String> collection = new ArrayList<>();
         Iterator<String> iterator = collection.iterator();
@@ -34,7 +34,7 @@ public class UtilitiesTest {
     }
 
 
-    @Test
+    @org.junit.Test
     public void unmodifiableTest() throws Exception {
         Collection<String> collection = Collections.unmodifiableCollection(new ArrayList<>(data));
         LOGGER.info("unmodifiableCollection: {}", collection); // Reading is OK
@@ -65,7 +65,7 @@ public class UtilitiesTest {
 
     }
 
-    @Test
+    @org.junit.Test
     public void immutableTest() throws Exception {
         List<String> list = new ImmutableList.Builder<String>().addAll(data).build();
         LOGGER.info("Immutable list: {}", list);
@@ -81,7 +81,7 @@ public class UtilitiesTest {
 
     }
 
-    @Test
+    @org.junit.Test
     public void sortingTest() throws Exception {
         List<String> list = new ArrayList<>(UtilitiesTest.list);
         list.addAll(UtilitiesTest.list);

@@ -3,7 +3,6 @@ package ekkel.book.containers;
 import ekkel.book.util.CollectionData;
 import ekkel.book.util.FlyweightMap;
 import ekkel.book.util.RandomGenerator;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +14,7 @@ import java.util.*;
 public class SetTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(SetTest.class);
 
-    @Test
+    @org.junit.Test
     public void treeSetTest() throws Exception {
         Set<String> sortedSet =
                 new TreeSet<>(String::compareToIgnoreCase);
@@ -23,7 +22,7 @@ public class SetTest {
         LOGGER.info("SortedSet: {}", sortedSet);
     }
 
-    @Test
+    @org.junit.Test
     public void sortedSetTest() throws Exception {
         LOGGER.info("----------------TreeSet----------------");
         sortedSetDemo(new TreeSet<>());
@@ -55,7 +54,7 @@ public class SetTest {
 
     }
 
-    @Test
+    @org.junit.Test
     public void setTypeTest() throws Exception {
         test(new HashSet<>(), HashType.class);
         test(new LinkedHashSet<>(), HashType.class);
@@ -81,7 +80,7 @@ public class SetTest {
         }
     }
 
-    @Test
+    @org.junit.Test
     public void setTest() throws Exception {
         setTest(new SimpleHashSet<>());
 

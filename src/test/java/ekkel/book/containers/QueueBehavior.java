@@ -1,7 +1,6 @@
 package ekkel.book.containers;
 
 import ekkel.book.util.Generator;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +25,7 @@ public class QueueBehavior {
         }
     };
 
-    @Test
+    @org.junit.Test
     public void integerHolderTest() throws Exception {
         Queue<IntegerHolder> queue = new PriorityQueue<>();
         for (int i = 0; i < 15; i++) {
@@ -39,7 +38,7 @@ public class QueueBehavior {
         LOGGER.info(builder.toString());
     }
 
-    @Test
+    @org.junit.Test
     public void prioryQueueTest() throws Exception {
         ToDoList toDoList = new ToDoList();
         toDoList.add("Empty trash", 'C', 4);
@@ -53,7 +52,7 @@ public class QueueBehavior {
 
     }
 
-    @Test
+    @org.junit.Test
     public void test() {
         pushAndPop(new LinkedList<>(), generator);
         pushAndPop(new PriorityQueue<>(), generator);
@@ -63,7 +62,7 @@ public class QueueBehavior {
         pushAndPop(new PriorityBlockingQueue<>(), generator);
     }
 
-    private  <T> void pushAndPop(Queue<T> queue, Generator<T> generator) {
+    private <T> void pushAndPop(Queue<T> queue, Generator<T> generator) {
         for (int i = 0; i < 10; i++) {
             queue.offer(generator.next());
         }
