@@ -2,3 +2,5 @@
 /.idea/*
 /target/*
 /samples/*
+/.gradle
+/build
