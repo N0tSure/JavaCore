@@ -1,0 +1,18 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+  
+  // compile
+  compile 'org.slf4j:slf4j-api:1.7.25'
+  compile 'org.slf4j:slf4j-simple:1.7.25'
+  compile 'com.google.guava:guava:21.0'
+  compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.6.3'
+
+  // test compile 
+  testCompile 'junit:junit:4.12'
+}
+
