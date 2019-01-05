@@ -1,19 +1,56 @@
 package ekkel.book.enumerated;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 /**
  * Created on 02 Jan, 2019.
  *
  * @author Artemis A. Sirosh
  */
-@RunWith(JUnit4.class)
-public class SoundsTest {
+class SoundsTest {
+
+    private static final Character[] CONSONANTS = {
+            'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k',
+            'l', 'm', 'n', 'p', 'q', 'r', 's', 't',
+            'v', 'x', 'z'
+    };
+
+    private static final Character[] VOWELS = { 'a', 'e', 'i', 'o', 'u' };
+    private static final Character[] SOMETIME_VOWELS = { 'y', 'w' };
+
+    @TestFactory
+    Stream<DynamicTest> shouldDetectAllVowels() {
+        return shouldDetectSound(VOWELS, Sound.VOWEL);
+    }
+
+    @TestFactory
+    Stream<DynamicTest> shouldDetectAllConsonants() {
+        return shouldDetectSound(CONSONANTS, Sound.CONSONANT);
+    }
+
+    @TestFactory
+    Stream<DynamicTest> shouldDetectSemiVowels() {
+        return shouldDetectSound(SOMETIME_VOWELS, Sound.SOMETIMES_VOWEL);
+    }
 
     @Test
-    public void shouldDetectAVowel() {
+    void shouldRejectUnsupportedCharacter() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Sound.resolve('к'));
+        assertEquals(exception.getMessage(), "Unsupported character: к");
+    }
 
+    private Stream<DynamicTest> shouldDetectSound(final Character[] characters, final Sound expectedSound) {
+        return Arrays.stream(characters).map(character -> dynamicTest(
+                "test for " + character,
+                () -> assertEquals(expectedSound, Sound.resolve(character))
+        ));
     }
 }

@@ -9,8 +9,13 @@ import java.util.Arrays;
  */
 public enum Sound {
 
-    ;
-//    VOWEL('a', 'e', 'i', 'o', 'u'), CONSONANT(CharSequence... chars), SOMETIMES_VOWEL(CharSequence... chars);
+    VOWEL('a', 'e', 'i', 'o', 'u' ),
+    CONSONANT('b', 'c', 'd', 'f',
+            'g', 'h', 'j', 'k', 'l', 'm',
+            'n', 'p', 'q', 'r', 's', 't',
+            'v', 'x', 'z'
+    ),
+    SOMETIMES_VOWEL('y', 'w' );
 
     private final char[] sounds;
 
@@ -20,7 +25,10 @@ public enum Sound {
         Arrays.sort(this.sounds);
     }
 
-    public Sound resolve(char s) {
-        return null;
+    public static Sound resolve(final char ch) {
+        return Arrays.stream(Sound.values())
+                .filter(sound -> Arrays.binarySearch(sound.sounds, ch) >= 0)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Unsupported character: " + ch));
     }
 }
