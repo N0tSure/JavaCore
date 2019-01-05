@@ -18,7 +18,7 @@ public class SetTest {
     public void treeSetTest() throws Exception {
         Set<String> sortedSet =
                 new TreeSet<>(String::compareToIgnoreCase);
-        sortedSet.addAll(new CollectionData<>(RandomGenerator.getStringGenerator(), 10_000_000));
+        sortedSet.addAll(new CollectionData<>(RandomGenerator.getStringGenerator(), 10_000));
         LOGGER.info("SortedSet: {}", sortedSet);
     }
 

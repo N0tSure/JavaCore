@@ -2,6 +2,7 @@ package ekkel.book.containers;
 
 import ekkel.book.util.*;
 import org.junit.Before;
+import org.junit.Ignore;
 
 import java.util.*;
 
@@ -17,6 +18,7 @@ public class ListPerformanceTest {
     private List<Test<LinkedList<String>>> queueTests = new ArrayList<>();
 
     @org.junit.Test
+    @Ignore
     public void listPerformanceTest() {
         Tester<List<String>> arrayTest = new Tester<List<String>>(null, listTests.subList(1, 3)) {
 

@@ -4,6 +4,7 @@ package ekkel.book.containers;
  * Created by cresh on 27.03.17.
  */
 import org.junit.Before;
+import org.junit.Ignore;
 
 import java.util.*;
 
@@ -66,6 +67,7 @@ public class MapPerfomanceTest {
     }
 
     @org.junit.Test
+    @Ignore
     public void simpleHashMapTest() throws Exception {
         Tester.getTester(new SimpleHashMap<>(), tests).setFieldWidth(10).setHeadline("SimpleHashMap").timedTest();
         Tester.getTester(new SimpleHashMap<>(), tests).setFieldWidth(10).setHeadline("SimpleHashMap").timedTest();
