@@ -90,4 +90,34 @@ class EnumSetTest {
 
         assertEquals(76, bigEnumSet.size());
     }
+
+    @Test
+    void shouldContainBasicWashCycles() {
+        final CarWash carWash = new CarWash();
+        LOGGER.info("CarWash: {}", carWash);
+
+        assertAll(
+                "Should contain basic wash cycles",
+                () -> assertTrue(carWash.washCar().contains("The basic wash")),
+                () -> assertTrue(carWash.washCar().contains("Rinsing"))
+        );
+    }
+
+    @Test
+    void shouldExtendWashCycle() {
+        final CarWash carWash = new CarWash();
+        carWash.add(CarWash.Cycle.BLOW_DRY);
+        carWash.add(CarWash.Cycle.BLOW_DRY);
+        carWash.add(CarWash.Cycle.RINSE);
+        carWash.add(CarWash.Cycle.HOT_WAX);
+        LOGGER.info("CarWash: {}", carWash);
+
+        assertAll(
+                "Should contain basic, rinse, hot wax and blow dry wash cycles",
+                () -> assertTrue(carWash.washCar().contains("The basic wash")),
+                () -> assertTrue(carWash.washCar().contains("Rinsing")),
+                () -> assertTrue(carWash.washCar().contains("Applying hot wax")),
+                () -> assertTrue(carWash.washCar().contains("Blowing dry"))
+        );
+    }
 }
