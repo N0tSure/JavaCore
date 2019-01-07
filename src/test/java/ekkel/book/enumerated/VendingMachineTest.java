@@ -1,9 +1,16 @@
 package ekkel.book.enumerated;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -37,6 +44,15 @@ class VendingMachineTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VendingMachineTest.class);
 
+    private static SelectionItems items;
+
+    @BeforeAll
+    static void setUp() throws IOException {
+        XmlMapper xmlMapper = new XmlMapper();
+        Path xmlFile = Paths.get("./src/main/resources/items.xml");
+        items = xmlMapper.readValue(Files.newInputStream(xmlFile), SelectionItems.class);
+    }
+
     @Test
     @DisplayName("Initial state should be 'RESTING'")
     void shouldRestingInitially() {
@@ -50,12 +66,12 @@ class VendingMachineTest {
     void shouldProceedAddingMoney() {
         final VendingMachine machine = new VendingMachine();
 
-        machine.next(Input.QUARTER);
+        machine.next(Coins.QUARTER);
         LOGGER.info("Machine state: {}, money amount: {}", machine.getState(), machine.getAmount());
         assertEquals(VendingMachine.State.ADDING_MONEY, machine.getState(), "Should be in adding money state");
         assertEquals(25, machine.getAmount(), "Should contain added money");
 
-        machine.next(Input.QUARTER);
+        machine.next(Coins.QUARTER);
         LOGGER.info("Machine state: {}, money amount: {}", machine.getState(), machine.getAmount());
         assertEquals(VendingMachine.State.ADDING_MONEY, machine.getState(), "Should be in adding money state");
         assertEquals(50, machine.getAmount(), "Should contain added money");
@@ -68,8 +84,8 @@ class VendingMachineTest {
     void shouldDispenseItem() {
         final VendingMachine machine = new VendingMachine();
 
-        machine.next(Input.DOLLAR);
-        machine.next(Input.SODA);
+        machine.next(Coins.DOLLAR);
+        machine.next(items.getItems().get(0));
         LOGGER.info("Machine state: {}, money amount: {}", machine.getState(), machine.getAmount());
 
         assertEquals(VendingMachine.State.DISPENSING, machine.getState(), "Should move to dispensing state");
@@ -82,8 +98,8 @@ class VendingMachineTest {
     void shouldGivingChangeAfterDispensing() {
         final VendingMachine machine = new VendingMachine();
 
-        machine.next(Input.DOLLAR);
-        machine.next(Input.SODA);
+        machine.next(Coins.DOLLAR);
+        machine.next(items.getItems().get(0));
         machine.next();
         LOGGER.info("Machine state: {}, money amount: {}", machine.getState(), machine.getAmount());
 
@@ -100,9 +116,9 @@ class VendingMachineTest {
     void shouldProceedToRestIfHasMoneyToChange() {
         final VendingMachine machine = new VendingMachine();
 
-        machine.next(Input.DOLLAR);
-        machine.next(Input.NICKEL);
-        machine.next(Input.SODA);
+        machine.next(Coins.DOLLAR);
+        machine.next(Coins.NICKEL);
+        machine.next(items.getItems().get(0));
         machine.next();
         machine.next();
         LOGGER.info("Machine state: {}, money amount: {}", machine.getState(), machine.getAmount());
@@ -121,8 +137,8 @@ class VendingMachineTest {
     void shouldProceedToRestIfHasNoMoneyToChange() {
         final VendingMachine machine = new VendingMachine();
 
-        machine.next(Input.DOLLAR);
-        machine.next(Input.SODA);
+        machine.next(Coins.DOLLAR);
+        machine.next(items.getItems().get(0));
         machine.next();
         machine.next();
         LOGGER.info("Machine state: {}, money amount: {}", machine.getState(), machine.getAmount());
@@ -141,10 +157,10 @@ class VendingMachineTest {
     void shouldProcessInsufficientMoneyCase() {
         final VendingMachine machine = new VendingMachine();
 
-        machine.next(Input.QUARTER);
-        machine.next(Input.DIME);
+        machine.next(Coins.QUARTER);
+        machine.next(Coins.DIME);
 
-        machine.next(Input.TOOTHPASTE);
+        machine.next(items.getItems().get(3));
         assertEquals(
                 VendingMachine.State.ADDING_MONEY,
                 machine.getState(),
@@ -159,8 +175,8 @@ class VendingMachineTest {
     void shouldGivingChange() {
         final VendingMachine machine = new VendingMachine();
 
-        machine.next(Input.QUARTER);
-        machine.next(Input.ABORT_TRANSACTION);
+        machine.next(Coins.QUARTER);
+        machine.next(Utility.ABORT_TRANSACTION);
 
         assertEquals(VendingMachine.State.GIVING_CHANGE, machine.getState(), "Should proceed to giving change");
         assertEquals(25, machine.getAmount(), "Should not giving money yet");
@@ -171,7 +187,7 @@ class VendingMachineTest {
     void shouldProcessTerminationStateFromResting() {
         final VendingMachine machine = new VendingMachine();
 
-        machine.next(Input.STOP);
+        machine.next(Utility.STOP);
         assertEquals(VendingMachine.State.TERMINAL, machine.getState(), "Should be in terminal state");
         assertEquals(0, machine.getAmount(), "Should keep taken money");
     }
@@ -181,8 +197,8 @@ class VendingMachineTest {
     void shouldProcessTerminationFromAddingMoney() {
         final VendingMachine machine = new VendingMachine();
 
-        machine.next(Input.DIME);
-        machine.next(Input.STOP);
+        machine.next(Coins.DIME);
+        machine.next(Utility.STOP);
 
         assertEquals(VendingMachine.State.TERMINAL, machine.getState(), "Should be in terminal state");
         assertEquals(10, machine.getAmount(), "Should keep taken money");
