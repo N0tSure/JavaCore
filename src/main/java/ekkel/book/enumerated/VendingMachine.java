@@ -37,7 +37,7 @@ class VendingMachine {
             ChangingStateContext next(Input input, ChangingStateContext context) {
                 final State nextState;
                 final int nextAmount;
-                switch(Category.categorize(input)) {
+                switch(input.category()) {
                     case MONEY:
                         nextAmount = context.getMoneyAmount() + input.amount();
                         nextState = ADDING_MONEY;
@@ -61,7 +61,7 @@ class VendingMachine {
                 final State nextState;
                 final int nextAmount;
                 final Input selection;
-                switch(Category.categorize(input)) {
+                switch(input.category()) {
 
                     case MONEY:
                         nextAmount = context.getMoneyAmount() + input.amount();
