@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<selectionItems>
+    <items>
+        <item>
+            <name>Chips</name>
+            <amount>100</amount>
+        </item>
+        <item>
+            <name>Soap</name>
+            <amount>50</amount>
+        </item>
+        <item>
+            <name>Soda</name>
+            <amount>100</amount>
+        </item>
+        <item>
+            <name>Toothpaste</name>
+            <amount>200</amount>
+        </item>
+    </items>
+</selectionItems>
