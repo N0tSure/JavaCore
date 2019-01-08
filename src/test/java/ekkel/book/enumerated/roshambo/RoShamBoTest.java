@@ -36,15 +36,21 @@ class RoShamBoTest {
     }
 
     @Test
+    @DisplayName("Double dispatching using EnumMap")
+    void enumMapDoubleDispatching() {
+        play(RoShamBo5.PAPER, RoShamBo5.ROCK, RoShamBo5.SCISSORS);
+    }
+
+    @Test
     @DisplayName("Test for double dispatching")
     void doubleDispatching() {
         play(new Paper(), new Rock(), new Scissors());
     }
 
     @Test
-    @DisplayName("Double dispatching using EnumMap")
-    void enumMapDoubleDispatching() {
-        play(RoShamBo5.PAPER, RoShamBo5.ROCK, RoShamBo5.SCISSORS);
+    @DisplayName("Double dispatching using table")
+    void tableDoubleDispatching() {
+        play(RoShamBo6.PAPER, RoShamBo6.ROCK, RoShamBo6.SCISSORS);
     }
 
     private static <T extends Competitor<T>> void play(final T paper, final T rock, final T scissors) {
