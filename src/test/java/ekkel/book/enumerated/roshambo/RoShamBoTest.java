@@ -18,6 +18,12 @@ class RoShamBoTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(RoShamBoTest.class);
 
     @Test
+    @DisplayName("Should dispatching using constant's method with ternary operator")
+    void anotherConstantMethodDispatching() {
+        play(RoShamBo4.PAPER, RoShamBo4.ROCK, RoShamBo4.SCISSORS);
+    }
+
+    @Test
     @DisplayName("Should dispatching using constant's methods")
     void constantMethodDispatching() {
         play(RoShamBo3.PAPER, RoShamBo3.ROCK, RoShamBo3.SCISSORS);
