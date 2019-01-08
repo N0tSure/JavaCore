@@ -18,6 +18,12 @@ class RoShamBoTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(RoShamBoTest.class);
 
     @Test
+    @DisplayName("Should dispatching using constant's methods")
+    void constantMethodDispatching() {
+        play(RoShamBo3.PAPER, RoShamBo3.ROCK, RoShamBo3.SCISSORS);
+    }
+
+    @Test
     @DisplayName("Enum dispatching test")
     void enumDispatching() {
         play(RoShamBo2.PAPER, RoShamBo2.ROCK, RoShamBo2.SCISSORS);
