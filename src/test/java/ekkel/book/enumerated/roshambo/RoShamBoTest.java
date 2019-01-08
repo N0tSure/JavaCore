@@ -41,6 +41,12 @@ class RoShamBoTest {
         play(new Paper(), new Rock(), new Scissors());
     }
 
+    @Test
+    @DisplayName("Double dispatching using EnumMap")
+    void enumMapDoubleDispatching() {
+        play(RoShamBo5.PAPER, RoShamBo5.ROCK, RoShamBo5.SCISSORS);
+    }
+
     private static <T extends Competitor<T>> void play(final T paper, final T rock, final T scissors) {
 
         assertOutcome(paper, scissors, LOSE);
