@@ -18,6 +18,12 @@ class RoShamBoTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(RoShamBoTest.class);
 
     @Test
+    @DisplayName("Enum dispatching test")
+    void enumDispatching() {
+        play(RoShamBo2.PAPER, RoShamBo2.ROCK, RoShamBo2.SCISSORS);
+    }
+
+    @Test
     @DisplayName("Test for double dispatching")
     void doubleDispatching() {
         play(new Paper(), new Rock(), new Scissors());
