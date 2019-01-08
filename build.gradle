@@ -10,6 +10,15 @@ test {
     useJUnitPlatform()
 }
 
+task deleteHotSpotShit(type: Delete) {
+    //noinspection GroovyAssignabilityCheck
+    delete fileTree(".").matching{
+        include '.attach_pid*'
+    }.each {
+        file -> println("Deleted: ${file.getName()}")
+    }
+}
+
 dependencies {
 
     def junitJupiterVersion = '5.3.2'
