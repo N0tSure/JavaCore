@@ -1,4 +1,4 @@
-package ekkel.book.enumerated;
+package ekkel.book.enumerated.machine;
 
 /**
  * Created on 07 Jan, 2019.

@@ -1,4 +1,4 @@
-package ekkel.book.enumerated;
+package ekkel.book.enumerated.machine;
 
 import java.util.Optional;
 

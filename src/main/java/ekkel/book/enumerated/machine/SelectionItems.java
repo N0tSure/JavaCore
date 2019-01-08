@@ -1,4 +1,4 @@
-package ekkel.book.enumerated;
+package ekkel.book.enumerated.machine;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
