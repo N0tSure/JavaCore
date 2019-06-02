@@ -1,0 +1,9 @@
+/**
+ * These are exercises from TIJ's chapter 14 (Type information).
+ */
+group = 'com.artemsirosh.tij'
+sourceCompatibility = '1.8'
+
+dependencies {
+    compile project(':common')
+}
