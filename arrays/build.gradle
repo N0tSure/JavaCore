@@ -1,0 +1,6 @@
+group = 'com.artemsirosh.tij'
+sourceCompatibility = '1.8'
+
+dependencies {
+    compile project(':common')
+}

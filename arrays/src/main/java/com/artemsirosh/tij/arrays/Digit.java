@@ -1,4 +1,4 @@
-package ekkel.book.arrays;
+package com.artemsirosh.tij.arrays;
 
 class Digit implements Comparable<Digit> {
     private int digit;

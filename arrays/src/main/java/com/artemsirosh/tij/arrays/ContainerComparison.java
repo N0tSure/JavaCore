@@ -1,4 +1,4 @@
-package ekkel.book.arrays;
+package com.artemsirosh.tij.arrays;
 
 import java.util.ArrayList;
 import java.util.Arrays;

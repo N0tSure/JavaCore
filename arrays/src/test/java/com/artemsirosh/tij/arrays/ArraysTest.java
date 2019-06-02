@@ -1,6 +1,6 @@
-package ekkel.book.arrays;
+package com.artemsirosh.tij.arrays;
 
-import ekkel.book.util.*;
+import com.artemsirosh.tij.util.*;
 import org.junit.Test;
 
 import java.math.BigDecimal;

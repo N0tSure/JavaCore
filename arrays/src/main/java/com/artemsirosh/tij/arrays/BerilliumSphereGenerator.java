@@ -1,6 +1,6 @@
-package ekkel.book.arrays;
+package com.artemsirosh.tij.arrays;
 
-import ekkel.book.util.Generator;
+import com.artemsirosh.tij.util.Generator;
 
 /**
  * Created by cresh on 07.02.17.
