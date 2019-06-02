@@ -1,0 +1,12 @@
+/**
+ * This module contains exercises from chapter 17 (Containers) of '
+ * Thinking in Java'.
+ */
+group = 'com.artemsirosh.tij'
+sourceCompatibility = '1.8'
+
+dependencies {
+    compile project(':common')
+    compile project(':generics')
+}
+
