@@ -1,0 +1,7 @@
+/**
+ * There are exercises of TIJ's chapter 13 (strings).
+ */
+group = 'com.artemsirosh.tij'
+sourceCompatibility = '1.8'
+
+
