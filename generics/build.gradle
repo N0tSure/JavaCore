@@ -1,0 +1,12 @@
+/**
+ * These are exercises from TIJ's chapter 15 (Generics).
+ */
+group = 'com.artemsirosh.tij'
+sourceCompatibility = '1.8'
+
+dependencies {
+    compile project(':common')
+    compile project(':collections')
+    compile project(':typeinfo')
+}
+
