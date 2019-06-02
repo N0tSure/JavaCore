@@ -1,0 +1,5 @@
+/**
+ * There are exercises for Herbert Schildt's books.
+ */
+group = 'com.artemsirosh.mfb'
+sourceCompatibility = '1.8'
