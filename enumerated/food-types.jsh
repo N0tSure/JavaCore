@@ -1,6 +1,6 @@
-import ekkel.book.enumerated.menu.Food;
+import com.artemsirosh.tij.enumerated.menu.Food;
 
-import static ekkel.book.enumerated.menu.Food.*;
+import static com.artemsirosh.tij.enumerated.menu.Food.*;
 
     Food food = Appetizer.SALAD;
     System.out.println(food);

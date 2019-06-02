@@ -1,0 +1,123 @@
+package com.artemsirosh.tij.enumerated;
+
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.EnumSet;
+
+import static com.artemsirosh.tij.enumerated.AlarmPoints.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Created on 05 Jan, 2019.
+ *
+ * @author Artemis A. Sirosh
+ */
+class EnumSetTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EnumSetTest.class);
+
+    @Test
+    void shouldAddReceiveSignals() {
+        final EnumSet<AlarmPoints> points = EnumSet.noneOf(AlarmPoints.class);
+
+        points.add(BATHROOM);
+        LOGGER.info("Signals: {}", points);
+
+        assertAll(
+                "Receive only bathroom",
+                () -> assertTrue(points.contains(BATHROOM)),
+                () -> assertFalse(points.contains(LOBBY))
+        );
+
+        points.addAll(EnumSet.of(STAIR1, STAIR2, KITCHEN));
+        LOGGER.info("Signals: {}", points);
+
+        assertAll(
+                "Receive signal from bathroom, kitchen, stairs 1 and 2",
+                () -> assertTrue(points.containsAll(EnumSet.of(BATHROOM, STAIR1, STAIR2, KITCHEN))),
+                () -> assertFalse(points.contains(OFFICE1))
+        );
+
+    }
+
+    @Test
+    void shouldRemoveSignals() {
+        final EnumSet<AlarmPoints> points = EnumSet.allOf(AlarmPoints.class);
+        points.removeAll(EnumSet.of(STAIR1, STAIR2, KITCHEN));
+        LOGGER.info("Signals: {}", points);
+
+        assertAll(
+                "Should not contain kitchen, stair 1 and 2 signals",
+                () -> assertFalse(points.contains(STAIR1)),
+                () -> assertFalse(points.contains(STAIR2)),
+                () -> assertFalse(points.contains(KITCHEN)),
+                () -> assertTrue(points.contains(OFFICE1)),
+                () -> assertTrue(points.contains(OFFICE4))
+        );
+
+        points.removeAll(EnumSet.range(OFFICE1, OFFICE4));
+        LOGGER.info("Signals: {}", points);
+
+        assertAll(
+                "Should not contain office signal 1, 2, 3 and 4",
+                () -> assertFalse(points.contains(OFFICE1)),
+                () -> assertFalse(points.contains(OFFICE2)),
+                () -> assertFalse(points.contains(OFFICE4))
+        );
+
+        final EnumSet<AlarmPoints> complement = EnumSet.complementOf(points);
+        LOGGER.info("Signals complement: {}", complement);
+
+        assertAll(
+                "Should contain all removed signals",
+                () -> assertTrue(complement.contains(STAIR1)),
+                () -> assertTrue(complement.contains(STAIR2)),
+                () -> assertTrue(complement.contains(KITCHEN)),
+                () -> assertTrue(complement.contains(OFFICE1)),
+                () -> assertTrue(complement.contains(OFFICE2)),
+                () -> assertTrue(complement.contains(OFFICE4)),
+                () -> assertFalse(complement.contains(BATHROOM)),
+                () -> assertFalse(complement.contains(LOBBY))
+        );
+    }
+
+    @Test
+    void shouldCreateMoreThanSixtyFourEnumInstances() {
+        final EnumSet<Big> bigEnumSet = EnumSet.allOf(Big.class);
+        LOGGER.info("Big EnumSet: {}", bigEnumSet);
+
+        assertEquals(76, bigEnumSet.size());
+    }
+
+    @Test
+    void shouldContainBasicWashCycles() {
+        final CarWash carWash = new CarWash();
+        LOGGER.info("CarWash: {}", carWash);
+
+        assertAll(
+                "Should contain basic wash cycles",
+                () -> assertTrue(carWash.washCar().contains("The basic wash")),
+                () -> assertTrue(carWash.washCar().contains("Rinsing"))
+        );
+    }
+
+    @Test
+    void shouldExtendWashCycle() {
+        final CarWash carWash = new CarWash();
+        carWash.add(CarWash.Cycle.BLOW_DRY);
+        carWash.add(CarWash.Cycle.BLOW_DRY);
+        carWash.add(CarWash.Cycle.RINSE);
+        carWash.add(CarWash.Cycle.HOT_WAX);
+        LOGGER.info("CarWash: {}", carWash);
+
+        assertAll(
+                "Should contain basic, rinse, hot wax and blow dry wash cycles",
+                () -> assertTrue(carWash.washCar().contains("The basic wash")),
+                () -> assertTrue(carWash.washCar().contains("Rinsing")),
+                () -> assertTrue(carWash.washCar().contains("Applying hot wax")),
+                () -> assertTrue(carWash.washCar().contains("Blowing dry"))
+        );
+    }
+}

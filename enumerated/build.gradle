@@ -1,0 +1,6 @@
+/**
+ * There are exercises for chapted 19 (enumerated) of TIJ.
+ */
+group = 'com.artemsirosh.tij'
+sourceCompatibility = '1.8'
+

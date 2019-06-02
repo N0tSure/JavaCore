@@ -1,3 +1,4 @@
 rootProject.name = 'core'
-include 'mfb', 'common', 'innerclasses', 'arrays', 'collections', 'containers', 'generics', 'typeinfo'
+include 'mfb', 'common', 'innerclasses', 'arrays', 'collections', 'containers',
+        'generics', 'typeinfo', 'strings', 'io', 'enumerated'
 

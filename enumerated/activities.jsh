@@ -1,4 +1,4 @@
-import ekkel.book.enumerated.Enums;
+import com.artemsirosh.tij.enumerated.Enums;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

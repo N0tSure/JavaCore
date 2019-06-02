@@ -1,4 +1,4 @@
-import ekkel.book.enumerated.menu.Course;
+import com.artemsirosh.tij.enumerated.menu.Course;
 
 import java.util.Arrays;
 import java.util.function.UnaryOperator;
