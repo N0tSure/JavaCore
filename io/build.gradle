@@ -1,0 +1,9 @@
+/**
+ * There are exercises from TIJ's chapter 18 (i/o).
+ */
+group = 'com.artemsirosh.tij'
+sourceCompatibility = '1.8'
+
+dependencies {
+    compile project(':common')
+}
