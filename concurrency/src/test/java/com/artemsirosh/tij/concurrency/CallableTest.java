@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
  */
 class CallableTest {
 
-    private static String handleStringFuture(Future<String> future) {
+    static <T> T handleStringFuture(Future<T> future) {
         try {
             return future.get();
         } catch (InterruptedException exc) {
