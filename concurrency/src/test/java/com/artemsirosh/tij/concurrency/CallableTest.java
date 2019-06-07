@@ -39,7 +39,8 @@ class CallableTest {
     @Test
     void fibonacciSum() throws ExecutionException, InterruptedException {
         final ExecutorService executor = Executors.newCachedThreadPool();
-        Future<Long> future = executor.submit(new SumFibonacciTask(5));
+        final SumFibonacciTask fibonacciTask = new SumFibonacciTask(executor);
+        Future<Long> future = fibonacciTask.runTask(5);
         Assertions.assertEquals(new Long(7), future.get());
     }
 }

@@ -2,7 +2,8 @@ package com.artemsirosh.tij.concurrency;
 
 import com.artemsirosh.tij.generics.Fibonacci;
 
-import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.stream.LongStream;
 
 /**
@@ -10,9 +11,9 @@ import java.util.stream.LongStream;
  *
  * @author Artem Sirosh 'ASir2089@gmail.com'
  */
-class SumFibonacciTask extends Fibonacci implements Callable<Long> {
+class SumFibonacciTask extends Fibonacci {
 
-    private final int limit;
+    private final ExecutorService executor;
 
     private static long fibonacciByNumber(long number) {
         int result;
@@ -35,17 +36,15 @@ class SumFibonacciTask extends Fibonacci implements Callable<Long> {
         return result;
     }
 
-    SumFibonacciTask(int limit) {
-        this.limit = limit;
+    SumFibonacciTask(ExecutorService executor) {
+        this.executor = executor;
     }
 
-    @Override
-    public Long call() throws Exception {
-        return LongStream.rangeClosed(1, limit)
-                .map(SumFibonacciTask::fibonacciByNumber)
-                .sum();
+    Future<Long> runTask(int limit) {
+        return executor.submit(
+                () -> LongStream.rangeClosed(1, limit)
+                        .map(SumFibonacciTask::fibonacciByNumber)
+                        .sum()
+        );
     }
-
-
-
 }
