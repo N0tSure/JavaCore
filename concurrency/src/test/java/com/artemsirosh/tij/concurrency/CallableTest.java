@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 /**
  * Created at 07-06-2019
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 class CallableTest {
 

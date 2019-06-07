@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 /**
  * Created at 03-06-2019
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 class FibonacciTaskTest {
 

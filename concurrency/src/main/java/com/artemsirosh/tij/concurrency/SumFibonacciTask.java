@@ -8,7 +8,7 @@ import java.util.stream.LongStream;
 /**
  * Created at 07-06-2019
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 class SumFibonacciTask extends Fibonacci implements Callable<Long> {
 

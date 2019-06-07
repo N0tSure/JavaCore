@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 /**
  * Created at 07-06-2019
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 class TaskWithResult implements Callable<String> {
 
