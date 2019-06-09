@@ -6,7 +6,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created at 09-06-2019
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 class MutexEvenGenerator extends EvenGenerator {
 
