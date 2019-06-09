@@ -15,6 +15,10 @@ import java.util.stream.IntStream;
  */
 class EvenGeneratorTest {
 
+    private static void checkNumber(final IntGenerator generator) throws InterruptedException {
+        checkNumber(generator, TimeUnit.SECONDS, 5, 5);
+    }
+
     private static void checkNumber(
             final IntGenerator generator,
             final TimeUnit timeUnit,
@@ -33,12 +37,18 @@ class EvenGeneratorTest {
     @RepeatedTest(5)
     @DisplayName("Show how broken SimpleEvenGenerator")
     void simpleGeneratorTest() throws InterruptedException {
-        checkNumber(new SimpleEvenGenerator(), TimeUnit.SECONDS, 5, 5);
+        checkNumber(new SimpleEvenGenerator());
     }
 
     @RepeatedTest(5)
     @DisplayName("Show SynchronizedEvenGenerator")
     void synchronizedGeneratorTest() throws InterruptedException {
-        checkNumber(new SynchronizedEvenGenerator(), TimeUnit.SECONDS, 5, 5);
+        checkNumber(new SynchronizedEvenGenerator());
+    }
+
+    @RepeatedTest(5)
+    @DisplayName("Show mutex EvenGenerator")
+    void mutexGeneratorTest() throws InterruptedException {
+        checkNumber(new MutexEvenGenerator());
     }
 }
