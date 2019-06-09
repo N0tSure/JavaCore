@@ -51,4 +51,10 @@ class EvenGeneratorTest {
     void mutexGeneratorTest() throws InterruptedException {
         checkNumber(new MutexEvenGenerator());
     }
+
+    @RepeatedTest(5)
+    @DisplayName("Show atomic EvenGenerator")
+    void atomicGeneratorTest() throws InterruptedException {
+        checkNumber(new AtomicEvenGenerator());
+    }
 }
