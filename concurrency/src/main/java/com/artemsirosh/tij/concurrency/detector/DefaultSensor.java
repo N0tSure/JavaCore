@@ -29,15 +29,13 @@ class DefaultSensor implements Sensor, Runnable {
     }
 
     @Override
-    public SensorDescriptor connect(Monitor monitor) {
+    public void connect(Monitor monitor) {
         connectedMonitors.add(monitor);
-        return descriptor;
     }
 
     @Override
-    public SensorDescriptor disconnect(Monitor monitor) {
+    public void disconnect(Monitor monitor) {
         connectedMonitors.remove(monitor);
-        return descriptor;
     }
 
     @Override

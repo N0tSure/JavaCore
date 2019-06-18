@@ -12,14 +12,12 @@ public interface Sensor {
     /**
      * Connect current sensor to {@link Monitor}.
      * @param monitor is tracking device which will connected.
-     * @return descriptor of current sensor.
      */
-    SensorDescriptor connect(Monitor monitor);
+    void connect(Monitor monitor);
 
     /**
      * Disconnect {@link Monitor} from current sensor.
      * @param monitor which will be disconnected from sensor
-     * @return descriptor of current sensor.
      */
-    SensorDescriptor disconnect(Monitor monitor);
+    void disconnect(Monitor monitor);
 }
