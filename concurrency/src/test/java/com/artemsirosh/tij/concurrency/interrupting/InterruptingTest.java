@@ -3,6 +3,8 @@ package com.artemsirosh.tij.concurrency.interrupting;
 import com.artemsirosh.tij.concurrency.SleeperTask;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,6 +94,16 @@ class InterruptingTest {
 
         TimeUnit.SECONDS.sleep(1);
         System.out.println("Interrupting thread.");
+        executorService.shutdownNow();
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1100, 1015})
+    void shouldCleanUpBeforeInterrupted(int delay) throws InterruptedException {
+        final ExecutorService executorService = Executors.newCachedThreadPool();
+        executorService.execute(new CleanUpTask());
+
+        TimeUnit.MILLISECONDS.sleep(delay);
         executorService.shutdownNow();
     }
 }
