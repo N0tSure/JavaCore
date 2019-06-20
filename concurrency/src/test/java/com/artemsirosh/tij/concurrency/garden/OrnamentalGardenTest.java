@@ -25,8 +25,7 @@ class OrnamentalGardenTest {
                 .forEach(executor::execute);
 
         TimeUnit.SECONDS.sleep(sleepTime);
-        garden.cancel();
-        executor.shutdown();
+        executor.shutdownNow();
 
         if (!executor.awaitTermination(250, TimeUnit.MILLISECONDS))
             System.out.println("Some task not terminated.");

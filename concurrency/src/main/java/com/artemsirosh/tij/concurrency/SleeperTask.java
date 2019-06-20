@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Artem Sirosh 'ASir2089@gmail.com'
  */
-class SleeperTask implements Runnable {
+public class SleeperTask implements Runnable {
 
     private static int sleeperCount = 0;
 
@@ -15,7 +15,7 @@ class SleeperTask implements Runnable {
     private final TimeUnit timeUnit;
     private final long delay;
 
-    SleeperTask(TimeUnit timeUnit, long delay) {
+    public SleeperTask(TimeUnit timeUnit, long delay) {
         this.id = sleeperCount++;
         this.timeUnit = timeUnit;
         this.delay = delay;

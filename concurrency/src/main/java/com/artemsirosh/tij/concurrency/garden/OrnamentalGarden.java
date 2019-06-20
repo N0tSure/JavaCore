@@ -16,16 +16,10 @@ public class OrnamentalGarden {
 
     private final Count count;
     private final List<Entrance> entrances;
-    private volatile boolean canceled;
 
     public OrnamentalGarden() {
         this.count = new Count();
         this.entrances = new ArrayList<>();
-        this.canceled = false;
-    }
-
-    public void cancel() {
-        canceled = true;
     }
 
     public int getTotalCount() {
@@ -62,17 +56,17 @@ public class OrnamentalGarden {
 
         @Override
         public void run() {
-            while (!canceled) {
-                synchronized (this) {
-                    ++number;
-                }
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    synchronized (this) {
+                        ++number;
+                    }
 
-                System.out.println(this + ", total: " + count.increment() + ", current: " + getValue());
-                try {
+                    System.out.println(this + ", total: " + count.increment() + ", current: " + getValue());
                     TimeUnit.MILLISECONDS.sleep(100);
-                } catch (InterruptedException exc) {
-                    System.err.println(this + " interrupted.");
                 }
+            } catch (InterruptedException exc) {
+                System.out.println(this+ ": sleep interrupted.");
             }
 
             System.out.println(this + " stopping.");
