@@ -16,13 +16,13 @@ public class DefaultCar implements Car {
     @Override
     public synchronized void waxed() {
         waxOn = true;
-        notifyAll();
+        notify();
     }
 
     @Override
     public synchronized void buffed() {
         waxOn = false;
-        notifyAll();
+        notify();
     }
 
     @Override
