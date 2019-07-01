@@ -11,16 +11,24 @@ public final class Restaurant implements Runnable {
 
     private final Chief chief;
     private final WaiterPerson waiter;
+    private final BusyBoy busyBoy;
     private final int mealLimit;
 
     private Meal meal;
+    private boolean clean;
     private int mealCount;
 
     public Restaurant(int mealLimit) {
         this.mealLimit = mealLimit;
         this.waiter = this.new WaiterPerson();
         this.chief = this.new Chief();
+        this.busyBoy = this.new BusyBoy();
         this.mealCount = 0;
+        this.clean = false;
+    }
+
+    public Runnable getBusyBoy() {
+        return busyBoy;
     }
 
     public Runnable getChief() {
@@ -54,6 +62,34 @@ public final class Restaurant implements Runnable {
     @Override
     public String toString() {
         return getClass().getSimpleName();
+    }
+
+    private class BusyBoy implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                while (!Thread.interrupted()) {
+                    synchronized (this) {
+                        while (clean)
+                            wait();
+                    }
+
+                    TimeUnit.MILLISECONDS.sleep(100);
+                    System.out.println(this + ": clean up.");
+                    clean = true;
+                }
+            } catch (InterruptedException exc) {
+                System.out.println(this + ": interrupted.");
+            }
+
+            System.out.println(this + ": stopping.");
+        }
+
+        @Override
+        public String toString() {
+            return getClass().getSimpleName();
+        }
     }
 
     private class Chief implements Runnable {
@@ -122,6 +158,11 @@ public final class Restaurant implements Runnable {
                     synchronized (chief) {
                         meal = null;
                         chief.notifyAll();
+                    }
+
+                    synchronized (busyBoy) {
+                        clean = false;
+                        busyBoy.notifyAll();
                     }
                 }
             } catch (InterruptedException exc) {

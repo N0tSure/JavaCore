@@ -24,6 +24,7 @@ class RestaurantTest {
         final Future<?> future = executorService.submit(restaurant);
         executorService.execute(restaurant.getChief());
         executorService.execute(restaurant.getWaiterPerson());
+        executorService.execute(restaurant.getBusyBoy());
 
         try {
             future.get(10, TimeUnit.SECONDS);
