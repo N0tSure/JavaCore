@@ -9,9 +9,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class WaxOn implements Runnable {
 
-    private final Car car;
+    private final BuffedCar car;
 
-    public WaxOn(Car car) {
+    public WaxOn(BuffedCar car) {
         this.car = car;
     }
 

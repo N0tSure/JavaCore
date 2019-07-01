@@ -1,6 +1,8 @@
 package com.artemsirosh.tij.concurrency;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created at 26-06-2019
@@ -12,6 +14,8 @@ public final class Restaurant implements Runnable {
     private final Chief chief;
     private final WaiterPerson waiter;
     private final BusyBoy busyBoy;
+    private final ReentrantLock chiefLock, waiterLock, busyBoyLock, restaurantLock;
+    private final Condition cleanCondition, hasFoodCondition, mealTakedCondition, mealReadyCondition;
     private final int mealLimit;
 
     private Meal meal;
@@ -23,6 +27,14 @@ public final class Restaurant implements Runnable {
         this.waiter = this.new WaiterPerson();
         this.chief = this.new Chief();
         this.busyBoy = this.new BusyBoy();
+        this.chiefLock = new ReentrantLock();
+        this.waiterLock = new ReentrantLock();
+        this.busyBoyLock = new ReentrantLock();
+        this.restaurantLock = new ReentrantLock();
+        this.cleanCondition = busyBoyLock.newCondition();
+        this.hasFoodCondition = restaurantLock.newCondition();
+        this.mealTakedCondition = chiefLock.newCondition();
+        this.mealReadyCondition = waiterLock.newCondition();
         this.mealCount = 0;
         this.clean = false;
     }
@@ -41,15 +53,17 @@ public final class Restaurant implements Runnable {
 
     @Override
     public void run() {
+
+        restaurantLock.lock();
         try {
-            synchronized (this) {
-                while (hasFood())
-                    wait();
-            }
+            while (hasFood())
+                hasFoodCondition.await();
 
             System.out.println("Restaurant: out of food.");
         } catch (InterruptedException exc) {
             System.out.println("Restaurant: interrupted.");
+        } finally {
+            restaurantLock.unlock();
         }
 
         System.out.println("Restaurant: closing.");
@@ -70,9 +84,12 @@ public final class Restaurant implements Runnable {
         public void run() {
             try {
                 while (!Thread.interrupted()) {
-                    synchronized (this) {
+                    busyBoyLock.lock();
+                    try {
                         while (clean)
-                            wait();
+                            cleanCondition.await();
+                    } finally {
+                        busyBoyLock.unlock();
                     }
 
                     TimeUnit.MILLISECONDS.sleep(100);
@@ -99,21 +116,30 @@ public final class Restaurant implements Runnable {
             try {
                 while (!Thread.interrupted()) {
                     if (hasFood()) {
-                        synchronized (this) {
+                        chiefLock.lock();
+                        try {
                             while (meal != null)
-                                wait();
+                                mealTakedCondition.await();
+                        } finally {
+                            chiefLock.unlock();
                         }
 
                         System.out.println(this + ": order up!");
-                        synchronized (waiter) {
+                        waiterLock.lock();
+                        try {
                             meal = new Meal(++mealCount);
-                            waiter.notifyAll();
+                            mealReadyCondition.signalAll();
+                        } finally {
+                            waiterLock.unlock();
                         }
 
                         TimeUnit.MILLISECONDS.sleep(100);
                     } else {
-                        synchronized (Restaurant.this) {
-                            Restaurant.this.notifyAll();
+                        restaurantLock.lock();
+                        try {
+                            hasFoodCondition.signalAll();
+                        } finally {
+                            restaurantLock.unlock();
                         }
                     }
                 }
@@ -149,20 +175,30 @@ public final class Restaurant implements Runnable {
         public void run() {
             try {
                 while (!Thread.interrupted()) {
-                    synchronized (this) {
+
+                    waiterLock.lock();
+                    try {
                         while (meal == null)
-                            wait();
+                            mealReadyCondition.await();
+                    } finally {
+                        waiterLock.unlock();
                     }
 
                     System.out.println(this + ": got " + meal);
-                    synchronized (chief) {
+                    chiefLock.lock();
+                    try {
                         meal = null;
-                        chief.notifyAll();
+                        mealTakedCondition.signalAll();
+                    } finally {
+                        chiefLock.unlock();
                     }
 
-                    synchronized (busyBoy) {
+                    busyBoyLock.lock();
+                    try {
                         clean = false;
-                        busyBoy.notifyAll();
+                        cleanCondition.signalAll();
+                    } finally {
+                        busyBoyLock.unlock();
                     }
                 }
             } catch (InterruptedException exc) {

@@ -19,7 +19,7 @@ class WaxOMaticTest {
     void simpleWaitNotifyDemo() throws InterruptedException {
 
         final ExecutorService executor = Executors.newCachedThreadPool();
-        final Car car = new DefaultCar();
+        final DefaultCar car = new DefaultCar();
         executor.execute(new WaxOn(car));
         executor.execute(new WaxOff(car));
 
