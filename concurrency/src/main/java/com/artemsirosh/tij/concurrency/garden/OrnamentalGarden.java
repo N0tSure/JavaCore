@@ -1,8 +1,15 @@
 package com.artemsirosh.tij.concurrency.garden;
 
-import java.util.ArrayList;
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.IntFunction;
+import java.util.stream.Collector;
+import java.util.stream.IntStream;
 
 /**
  * Created at 11-06-2019
@@ -12,30 +19,53 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Artem Sirosh 'ASir2089@gmail.com'
  */
-public class OrnamentalGarden {
+public class OrnamentalGarden implements Callable<Integer> {
 
     private final Count count;
     private final List<Entrance> entrances;
+    private final CountDownLatch latch;
 
-    public OrnamentalGarden() {
+    private volatile boolean canceled;
+
+    private static List<Entrance> generateEntrances(final IntFunction<Entrance> entranceMapper, final int num) {
+        return IntStream.range(0, num)
+                .mapToObj(entranceMapper)
+                .collect(Collector.of(
+                        ImmutableList::<Entrance>builder,
+                        ImmutableList.Builder::add,
+                        (left, right) -> left.addAll(right.build()),
+                        ImmutableList.Builder::build
+                ));
+    }
+
+    public OrnamentalGarden(final int entrancesNum) {
         this.count = new Count();
-        this.entrances = new ArrayList<>();
+        this.entrances = generateEntrances(id -> this.new EntranceImpl(id), entrancesNum);
+        this.latch = new CountDownLatch(entrancesNum);
+        this.canceled = false;
+    }
+
+    @Override
+    public Integer call() throws Exception {
+
+        latch.await();
+        System.out.println("All entrance is closed");
+
+        return entrances.stream()
+                .mapToInt(Entrance::getValue)
+                .sum();
+    }
+
+    public void cancel() {
+        this.canceled = true;
     }
 
     public int getTotalCount() {
         return count.value();
     }
 
-    public Entrance newEntrance(int id) {
-        Entrance entrance = new EntranceImpl(id);
-        entrances.add(entrance);
-        return entrance;
-    }
-
-    public int sumEntrances() {
-        return entrances.stream()
-                .mapToInt(Entrance::getValue)
-                .sum();
+    public void startEntrances(ExecutorService executorService) {
+        entrances.forEach(executorService::execute);
     }
 
     private class EntranceImpl implements Entrance {
@@ -57,7 +87,7 @@ public class OrnamentalGarden {
         @Override
         public void run() {
             try {
-                while (!Thread.currentThread().isInterrupted()) {
+                while (!canceled) {
                     synchronized (this) {
                         ++number;
                     }
@@ -69,6 +99,7 @@ public class OrnamentalGarden {
                 System.out.println(this+ ": sleep interrupted.");
             }
 
+            latch.countDown();
             System.out.println(this + " stopping.");
         }
 
