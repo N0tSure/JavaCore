@@ -12,7 +12,7 @@ import java.util.function.Function;
 /**
  * Created at 17-07-2019
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 public class GreenhouseDelayQueue implements Greenhouse {
 
