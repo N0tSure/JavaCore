@@ -9,10 +9,10 @@ import java.util.function.Function;
  */
 public class WaterOnTask implements GreenhouseActionTask {
 
-    private final GreenhouseScheduler scheduler;
+    private final Greenhouse greenhouse;
 
-    public WaterOnTask(GreenhouseScheduler scheduler) {
-        this.scheduler = scheduler;
+    public WaterOnTask(Greenhouse greenhouse) {
+        this.greenhouse = greenhouse;
     }
 
     /**
@@ -21,7 +21,7 @@ public class WaterOnTask implements GreenhouseActionTask {
      */
     @Override
     public void run() {
-        scheduler.getAndUpdateMeasurement(measurement -> updateMeasurement(
+        greenhouse.getAndUpdateMeasurement(measurement -> updateMeasurement(
                 temperature -> subtractPercentFromValue(temperature, DECIMAL_PART),
                 humidity -> addPercentsToValue(humidity, FIFTH_PART),
                 Function.identity(),

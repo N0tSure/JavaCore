@@ -9,10 +9,10 @@ import java.util.function.Function;
  */
 public class LightOffTask implements GreenhouseActionTask {
 
-    private final GreenhouseScheduler scheduler;
+    private final Greenhouse greenhouse;
 
-    public LightOffTask(GreenhouseScheduler scheduler) {
-        this.scheduler = scheduler;
+    public LightOffTask(Greenhouse greenhouse) {
+        this.greenhouse = greenhouse;
     }
 
     /**
@@ -21,7 +21,7 @@ public class LightOffTask implements GreenhouseActionTask {
      */
     @Override
     public void run() {
-        scheduler.getAndUpdateMeasurement(measurement -> updateMeasurement(
+        greenhouse.getAndUpdateMeasurement(measurement -> updateMeasurement(
                 temperature -> subtractPercentFromValue(temperature, FIFTH_PART),
                 humidity -> addPercentsToValue(humidity, DECIMAL_PART),
                 Function.identity(),

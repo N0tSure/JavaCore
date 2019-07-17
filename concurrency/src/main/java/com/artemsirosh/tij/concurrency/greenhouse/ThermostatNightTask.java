@@ -7,10 +7,10 @@ package com.artemsirosh.tij.concurrency.greenhouse;
  */
 public class ThermostatNightTask implements GreenhouseActionTask {
 
-    private final GreenhouseScheduler scheduler;
+    private final Greenhouse greenhouse;
 
-    public ThermostatNightTask(GreenhouseScheduler scheduler) {
-        this.scheduler = scheduler;
+    public ThermostatNightTask(Greenhouse greenhouse) {
+        this.greenhouse = greenhouse;
     }
 
     /**
@@ -19,7 +19,7 @@ public class ThermostatNightTask implements GreenhouseActionTask {
      */
     @Override
     public void run() {
-        scheduler.getAndUpdateMeasurement(measurement -> updateMeasurement(
+        greenhouse.getAndUpdateMeasurement(measurement -> updateMeasurement(
                 temperature -> subtractPercentFromValue(temperature, DECIMAL_PART),
                 humidity -> addPercentsToValue(humidity, DECIMAL_PART),
                 thermostat -> Measurement.Thermostat.NIGHT,

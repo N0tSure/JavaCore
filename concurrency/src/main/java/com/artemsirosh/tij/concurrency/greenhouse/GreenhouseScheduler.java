@@ -16,7 +16,7 @@ import java.util.function.Function;
  *
  * @author Artem Sirosh 'ASir2089@gmail.com'
  */
-public class GreenhouseScheduler {
+public class GreenhouseScheduler implements Greenhouse {
 
     private final Deque<Measurement> measurements;
     private final ScheduledExecutorService scheduledExecutor;
@@ -26,27 +26,19 @@ public class GreenhouseScheduler {
         this.scheduledExecutor = scheduledExecutor;
     }
 
-    /**
-     * Get last measurement, update using given {@link Function} and saves new
-     * {@link Measurement}. This method acquire monitor of current
-     * {@link GreenhouseScheduler}, therefore given function or context where it
-     * created must not use resource from another thread, which can try acquire
-     * lock on this instance.
-     *
-     * @param updateMeasurementFunction it takes as argument last measurement and
-     *                                  result of function will be saved as new
-     *                                  last result.
-     */
+    @Override
     public void getAndUpdateMeasurement(Function<Measurement, Measurement> updateMeasurementFunction) {
         synchronized (this) {
             measurements.addLast(updateMeasurementFunction.apply(measurements.peekLast()));
         }
     }
 
+    @Override
     public Runnable getTerminationTask(FinisherTask<List<Measurement>> finisherTask) {
         return () -> finisherTask.setResult(ImmutableList.copyOf(measurements));
     }
 
+    @Override
     public void schedule(Runnable event, long delay) {
         scheduledExecutor.schedule(event, delay, TimeUnit.MILLISECONDS);
     }
