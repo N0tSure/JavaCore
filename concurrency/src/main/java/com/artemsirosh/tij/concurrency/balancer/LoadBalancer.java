@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 /**
  * Created at 21-07-2019
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 public class LoadBalancer implements Runnable {
 
@@ -20,12 +20,7 @@ public class LoadBalancer implements Runnable {
         return new Builder();
     }
 
-    private static void chillDownServer(Server server, Queue<Server> pooledQueue) {
-        server.stopServing();
-        pooledQueue.add(server);
-    }
-
-    public LoadBalancer(
+    private LoadBalancer(
             PriorityQueue<Server> runningServers,
             Queue<Server> pooledQueue,
             int aliveConnectionLimit, int reSpawnInterval
@@ -46,7 +41,18 @@ public class LoadBalancer implements Runnable {
                 if (!overloaded.isEmpty()) {
                     findPooledServer().ifPresent(runningServers::add);
                 } else {
-                    findIdlingServers().forEach(server -> chillDownServer(server, pooledQueue));
+
+                    final List<Server> idlingServers = findIdlingServers();
+                    final List<Server> willBeStoppedServers;
+                    if (idlingServers.size() == runningServers.size()) {
+                        willBeStoppedServers = idlingServers.subList(1, idlingServers.size());
+                    } else {
+                        willBeStoppedServers = idlingServers;
+                    }
+
+                    willBeStoppedServers.forEach(Server::stopServing);
+                    runningServers.removeAll(willBeStoppedServers);
+                    pooledQueue.addAll(willBeStoppedServers);
                 }
             }
         } catch (InterruptedException exc) {

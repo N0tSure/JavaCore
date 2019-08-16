@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created at 19-07-2019
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 public class ClientGenerator implements Runnable {
 

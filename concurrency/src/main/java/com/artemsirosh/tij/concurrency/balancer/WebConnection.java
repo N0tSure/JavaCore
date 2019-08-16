@@ -7,7 +7,7 @@ import java.util.concurrent.Delayed;
  *
  * Represents {@link Client}'s web connection.
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 interface WebConnection extends Delayed {
 }

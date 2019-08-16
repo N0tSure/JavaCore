@@ -1,7 +1,5 @@
 package com.artemsirosh.tij.concurrency.balancer;
 
-import com.artemsirosh.tij.concurrency.FinisherTask;
-
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -10,7 +8,7 @@ import java.util.stream.IntStream;
 /**
  * Created at 29-07-2019
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 public class LoadBalancerDemo {
 
@@ -19,16 +17,16 @@ public class LoadBalancerDemo {
         final int numberOfServers = 5;
         final int connectionLimit = 5;
         final int reSpawnInterval = 100;
-        final int maxSeviceTime = 1000;
+        final int maxServiceTime = 1000;
         final int controlInterval = 100;
         final int monitoringInterval = 100;
 
         final Queue<Server> pooledQueue = new LinkedList<>();
         final BlockingQueue<Client> clients = new LinkedBlockingQueue<>();
-        final  ClientGenerator generator = ClientGenerator.builder()
+        final ClientGenerator generator = ClientGenerator.builder()
                 .setClientsQueue(clients)
                 .setReSpawnInterval(reSpawnInterval)
-                .setMaxServiceTime(maxSeviceTime)
+                .setMaxServiceTime(maxServiceTime)
                 .setRandom(new Random(42))
                 .build();
         exec.execute(generator);
@@ -46,7 +44,7 @@ public class LoadBalancerDemo {
                 .build();
         exec.execute(loadBalancer);
 
-        final Monitor monitor = new Monitor(runningServers, pooledQueue, monitoringInterval);
+        final Monitor monitor = new Monitor(runningServers, pooledQueue, clients::size, monitoringInterval);
         exec.execute(monitor);
 
         TimeUnit.SECONDS.sleep(10);

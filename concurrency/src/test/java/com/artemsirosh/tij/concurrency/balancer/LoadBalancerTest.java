@@ -12,14 +12,13 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * Created at 22-07-2019
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 @ExtendWith(MockitoExtension.class)
 class LoadBalancerTest {
@@ -53,6 +52,30 @@ class LoadBalancerTest {
     }
 
     @Test
+    @DisplayName("Should keep running a single server")
+    void theLastRunningServerPreserve(@Mock Server firstIdlingServer, @Mock Server secondIdlingServer) throws InterruptedException {
+
+        final PriorityQueue<Server> runningServers = serversToPriorityQueue(firstIdlingServer, secondIdlingServer);
+        final Queue<Server> pooledQueue = new LinkedList<>();
+        final ExecutorService executorService = Executors.newSingleThreadExecutor();
+        final LoadBalancer balancer = LoadBalancer.builder()
+                .setRunningServers(runningServers)
+                .setPooledQueue(pooledQueue)
+                .setCheckInterval(100)
+                .setConnectionLimit(5)
+                .build();
+
+        Mockito.when(firstIdlingServer.getAliveConnections()).thenReturn(generateWebConnections(0));
+        Mockito.when(secondIdlingServer.getAliveConnections()).thenReturn(generateWebConnections(0));
+
+        executorService.execute(balancer);
+        TimeUnit.MILLISECONDS.sleep(150);
+        executorService.shutdownNow();
+
+        Assertions.assertFalse(runningServers.isEmpty());
+    }
+
+    @Test
     @DisplayName("Should detect idling server and cool down it to pool")
     void shouldDetectIdlingServer(
             @Mock Server runningServer, @Mock Server idlingServer, @Mock Server pooledServer
@@ -78,31 +101,32 @@ class LoadBalancerTest {
         Mockito.verify(idlingServer, Mockito.atLeastOnce()).getAliveConnections();
         Mockito.verify(idlingServer).stopServing();
         Assertions.assertEquals(2, pooledQueue.size());
+        Assertions.assertEquals(1, runningQueue.size());
     }
 
-    @Test
-    void monitorPrintingTest(
-            @Mock Server overLoadedServer, @Mock Server runningServer, @Mock Server pooledServer
-    ) throws InterruptedException {
-        final PriorityQueue<Server> runningQueue = serversToPriorityQueue(overLoadedServer, runningServer);
-        final Queue<Server> pooledQueue = new LinkedList<>(Collections.singletonList(pooledServer));
-        final Monitor monitor = new Monitor(runningQueue, pooledQueue, 50);
-        final ExecutorService exec = Executors.newSingleThreadExecutor();
-
-        Mockito.when(overLoadedServer.getAliveConnections()).thenReturn(generateWebConnections(6));
-        Mockito.when(overLoadedServer.shortDescription()).thenReturn("S1");
-
-        Mockito.when(runningServer.getAliveConnections()).thenReturn(generateWebConnections(4));
-        Mockito.when(runningServer.shortDescription()).thenReturn("S2");
-
-        Mockito.when(pooledServer.shortDescription()).thenReturn("S3");
-
-        exec.execute(monitor);
-        TimeUnit.SECONDS.sleep(1);
-        exec.shutdownNow();
-
-
-    }
+//    @Test
+//    void monitorPrintingTest(
+//            @Mock Server overLoadedServer, @Mock Server runningServer, @Mock Server pooledServer
+//    ) throws InterruptedException {
+//        final PriorityQueue<Server> runningQueue = serversToPriorityQueue(overLoadedServer, runningServer);
+//        final Queue<Server> pooledQueue = new LinkedList<>(Collections.singletonList(pooledServer));
+//        final Monitor monitor = new Monitor(runningQueue, pooledQueue, 50);
+//        final ExecutorService exec = Executors.newSingleThreadExecutor();
+//
+//        Mockito.when(overLoadedServer.getAliveConnections()).thenReturn(generateWebConnections(6));
+//        Mockito.when(overLoadedServer.shortDescription()).thenReturn("S1");
+//
+//        Mockito.when(runningServer.getAliveConnections()).thenReturn(generateWebConnections(4));
+//        Mockito.when(runningServer.shortDescription()).thenReturn("S2");
+//
+//        Mockito.when(pooledServer.shortDescription()).thenReturn("S3");
+//
+//        exec.execute(monitor);
+//        TimeUnit.SECONDS.sleep(1);
+//        exec.shutdownNow();
+//
+//
+//    }
 
     private static PriorityQueue<Server> serversToPriorityQueue(Server... servers) {
         return Arrays.stream(servers).collect(PriorityQueue::new, PriorityQueue::add, PriorityQueue::addAll);

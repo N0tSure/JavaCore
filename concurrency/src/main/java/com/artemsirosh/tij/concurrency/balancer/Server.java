@@ -10,7 +10,7 @@ import java.util.concurrent.DelayQueue;
 /**
  * Created at 21-07-2019
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 public class Server implements Runnable, Comparable<Server> {
 
@@ -20,7 +20,7 @@ public class Server implements Runnable, Comparable<Server> {
 
     private boolean serving;
 
-    public Server(int id, BlockingQueue<Client> clients) {
+    Server(int id, BlockingQueue<Client> clients) {
         this.id = id;
         this.clients = clients;
         this.connectedClients = new DelayQueue<>();
@@ -70,7 +70,7 @@ public class Server implements Runnable, Comparable<Server> {
         connectedClients.clear();
     }
 
-    public String shortDescription() {
+    String shortDescription() {
         return String.format("S%d", id);
     }
 

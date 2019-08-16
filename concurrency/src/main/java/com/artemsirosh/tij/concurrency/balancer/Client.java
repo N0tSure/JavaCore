@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created at 19-07-2019
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 public class Client {
 
@@ -36,7 +36,7 @@ public class Client {
 
         @Override
         public long getDelay(TimeUnit unit) {
-            return unit.convert(System.nanoTime() - processingDelay, TimeUnit.NANOSECONDS);
+            return unit.convert(processingDelay - System.nanoTime(), TimeUnit.NANOSECONDS);
         }
 
         @Override
