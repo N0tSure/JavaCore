@@ -3,4 +3,6 @@ sourceCompatibility = '1.8'
 
 dependencies {
     compile project(':common')
+
+    testCompile "junit:junit:${rootProject.ext['com.artemsirosh.junit4Version']}"
 }

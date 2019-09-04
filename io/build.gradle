@@ -6,4 +6,7 @@ sourceCompatibility = '1.8'
 
 dependencies {
     compile project(':common')
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${rootProject.ext['com.artemsirosh.jackson.dataformat']}"
+
+    testCompile "junit:junit:${rootProject.ext['com.artemsirosh.junit4Version']}"
 }

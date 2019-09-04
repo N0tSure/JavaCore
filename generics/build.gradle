@@ -8,5 +8,7 @@ dependencies {
     compile project(':common')
     compile project(':collections')
     compile project(':typeinfo')
+
+    testCompile "junit:junit:${rootProject.ext['com.artemsirosh.junit4Version']}"
 }
 
