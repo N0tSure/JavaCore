@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
  *
  * Represent a task that may be used as finisher task, can return value.
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  */
 public interface Finisher<T> extends Callable<T> {
 
