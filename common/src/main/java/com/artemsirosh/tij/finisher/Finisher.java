@@ -6,9 +6,35 @@ import java.util.concurrent.Callable;
 /**
  * Created at 16-09-2019
  *
- * Represent a task that may be used as finisher task, can return value.
+ * {@link Finisher} is a special task used for receiving shutdown signal.
+ * Instance becoming ready to signal receiving only after {@link #call()} method
+ * will be invoked, therefore it should be used as {@link Callable}.
+ * Example:
+ * <pre>
+ *     final ExecutorService executor = Executors.newCachedThreadPool();
+ *     final Finisher&lt;Integer&gt; finisher = ...
+ *     // Finisher waiting for shutdown signal
+ *     final Future&lt;Integer&gt; future = executor.submit(finisher);
+ *     executor.execute(task1);
+ *     executor.execute(task2);
+ *
+ *     // current thread wait until a finisher receives shutdown signal
+ *     final int result = future.get();
+ *
+ *     // after shutdown signal received stopping all tasks
+ *     executor.shutdownNow();
+ * </pre>
+ *
+ * {@link java.util.concurrent.Future} provided by finisher return value that
+ * finisher instance contain.
+ *
+ * Each {@link Finisher} instance is a single use component, for getting
+ * instances use {@link Finishers}.
  *
  * @author Artem Sirosh 'ASir2089@gmail.com'
+ * @see Finishers
+ * @see Callable
+ * @see java.util.concurrent.Future
  */
 public interface Finisher<T> extends Callable<T> {
 
@@ -20,7 +46,8 @@ public interface Finisher<T> extends Callable<T> {
     void setReturnValue(T t);
 
     /**
-     * Return value, which previously been set.
+     * Return value, which previously been set. Returning not causes thread
+     * waiting or sleeping, i.e. value will be returning immediately.
      * @return value
      */
     Optional<T> getReturnValue();
