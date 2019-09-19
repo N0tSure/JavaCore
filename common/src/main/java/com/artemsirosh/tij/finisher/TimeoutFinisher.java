@@ -1,5 +1,7 @@
 package com.artemsirosh.tij.finisher;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -25,12 +27,12 @@ class TimeoutFinisher<T> implements Finisher<T> {
     }
 
     @Override
-    public void setReturnValue(T t) {
+    public void setReturnValue(@NotNull T t) {
         this.holder.setValue(t);
     }
 
     @Override
-    public Optional<T> getReturnValue() {
+    public @NotNull Optional<T> getReturnValue() {
         return this.holder.getValue();
     }
 
@@ -52,7 +54,7 @@ class TimeoutFinisher<T> implements Finisher<T> {
     }
 
     @Override
-    public void shutdown(T t) {
+    public void shutdown(@NotNull T t) {
         holder.setValue(t);
         processingThreadHolder.interruptHoldingThread();
     }

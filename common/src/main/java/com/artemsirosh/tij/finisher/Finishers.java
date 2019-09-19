@@ -1,5 +1,8 @@
 package com.artemsirosh.tij.finisher;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import javax.management.*;
 import java.lang.management.ManagementFactory;
 import java.net.InetSocketAddress;
@@ -31,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  *     </tr>
  * </table>
  *
- * @author Artem Sirosh 'Artem.Sirosh@t-systems.com'
+ * @author Artem Sirosh 'ASir2089@gmail.com'
  * @see Finisher
  */
 public final class Finishers {
@@ -45,7 +48,9 @@ public final class Finishers {
      * @param <T> type of finisher's return value
      * @return instance of {@link Finisher}
      */
-    public static <T> Finisher<T> newTimeoutFinisher(TimeUnit timeUnit, long timeout) {
+    @NotNull
+    @Contract("!null, _ -> new")
+    public static <T> Finisher<T> newTimeoutFinisher(@NotNull TimeUnit timeUnit, long timeout) {
         return new TimeoutFinisher<>(timeUnit, timeout);
     }
 
@@ -59,6 +64,7 @@ public final class Finishers {
      * @param <T> type of finisher's return value
      * @return instance of {@link Finisher}
      */
+    @NotNull
     public static <T> Finisher<T> newMillsTimeoutFinisher(long mills) {
         return newTimeoutFinisher(TimeUnit.MILLISECONDS, mills);
     }
@@ -73,6 +79,7 @@ public final class Finishers {
      * @param <T> type of finisher's return value
      * @return instance of {@link Finisher}
      */
+    @NotNull
     public static <T> Finisher<T> newSecondsTimeoutFinisher(long seconds) {
         return newTimeoutFinisher(TimeUnit.SECONDS, seconds);
     }
@@ -87,7 +94,9 @@ public final class Finishers {
      * @return instance of {@link Finisher}
      * @see InetSocketAddress
      */
-    public static <T> Finisher<T> newNetworkFinisher(String hostname, int port) {
+    @NotNull
+    @Contract("!null, _ -> new")
+    public static <T> Finisher<T> newNetworkFinisher(@NotNull String hostname, int port) {
         return new NetworkFinisher<>(new InetSocketAddress(hostname, port));
     }
 
@@ -99,6 +108,8 @@ public final class Finishers {
      * @param <T> type of finisher's return value
      * @return instance of {@link Finisher}
      */
+    @NotNull
+    @Contract("_ -> new")
     public static <T> Finisher<T> newNetworkFinisher(int port) {
         return new NetworkFinisher<>(new InetSocketAddress(port));
     }
@@ -122,7 +133,8 @@ public final class Finishers {
      * @see MBeanServer#registerMBean(Object, ObjectName)
      * @see ObjectName
      */
-    public static <T> Finisher<T> newJMXFinisher(String taskName) {
+    @NotNull
+    public static <T> Finisher<T> newJMXFinisher(@NotNull String taskName) {
         final JMXFinisher<T> finisher = new JMXFinisher<>(
                 new BlockingReturnValueHolder<>(),
                 new ReturnValueHolder<>(),
@@ -147,6 +159,7 @@ public final class Finishers {
      * @param <T> type of finisher's return value
      * @return instance of {@link Finisher}
      */
+    @NotNull
     public static <T> Finisher<T> newJMXFinisher() {
         return newJMXFinisher(UUID.randomUUID().toString());
     }
@@ -157,7 +170,7 @@ public final class Finishers {
      * @throws IllegalArgumentException if given task name is violate MBeans rules
      * @throws IllegalStateException if given MBean not registered
      */
-    public static void unregisterJMXFinisherMbean(JMXFinisherMBean mBean) {
+    public static void unregisterJMXFinisherMbean(@NotNull JMXFinisherMBean mBean) {
 
         final MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
         try {

@@ -1,5 +1,8 @@
 package com.artemsirosh.tij.finisher;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Optional;
 
 /**
@@ -13,11 +16,11 @@ class ReturnValueHolder<T> {
 
     private T value;
 
-    synchronized void setValue(T value) {
+    synchronized void setValue(@Nullable T value) {
         this.value = value;
     }
 
-    synchronized Optional<T> getValue() {
+    synchronized @NotNull Optional<T> getValue() {
         return Optional.ofNullable(value);
     }
 }

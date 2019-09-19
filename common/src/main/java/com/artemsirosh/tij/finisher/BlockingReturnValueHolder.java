@@ -1,5 +1,7 @@
 package com.artemsirosh.tij.finisher;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.concurrent.Semaphore;
 
 /**
@@ -28,7 +30,7 @@ class BlockingReturnValueHolder<T> {
      * @return a value
      * @throws InterruptedException if waiting has been interrupted
      */
-    T getValue() throws InterruptedException {
+    @Nullable T getValue() throws InterruptedException {
         semaphore.acquire();
         synchronized (this) {
             return value;
@@ -39,7 +41,7 @@ class BlockingReturnValueHolder<T> {
      * Take value for return and unlocks semaphore.
      * @param t a value
      */
-    void setValue(T t) {
+    void setValue(@Nullable T t) {
         synchronized (this) {
             this.value = t;
         }

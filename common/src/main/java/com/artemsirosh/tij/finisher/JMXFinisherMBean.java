@@ -1,5 +1,7 @@
 package com.artemsirosh.tij.finisher;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Created at 18-09-2019
  *
@@ -15,7 +17,7 @@ public interface JMXFinisherMBean {
      * Name of task controlled by this MBean.
      * @return task name
      */
-    String getTaskName();
+    @NotNull String getTaskName();
 
     /**
      * Sends shutdown signal to task.

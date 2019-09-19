@@ -1,5 +1,7 @@
 package com.artemsirosh.tij.finisher;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Optional;
 
 /**
@@ -27,10 +29,11 @@ class JMXFinisher<T> implements Finisher<T>, JMXFinisherMBean {
     }
 
     @Override
-    public void setReturnValue(T t) {
+    public void setReturnValue(@NotNull T t) {
         valueHolder.setValue(t);
     }
 
+    @NotNull
     @Override
     public Optional<T> getReturnValue() {
         return valueHolder.getValue();
@@ -42,10 +45,11 @@ class JMXFinisher<T> implements Finisher<T>, JMXFinisherMBean {
     }
 
     @Override
-    public void shutdown(T t) {
+    public void shutdown(@NotNull T t) {
         blockingHolder.setValue(t);
     }
 
+    @NotNull
     @Override
     public String getTaskName() {
         return taskName;

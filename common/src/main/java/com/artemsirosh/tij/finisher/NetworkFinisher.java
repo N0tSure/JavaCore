@@ -1,5 +1,7 @@
 package com.artemsirosh.tij.finisher;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedByInterruptException;
@@ -39,10 +41,11 @@ class NetworkFinisher<T> implements Finisher<T> {
     }
 
     @Override
-    public void setReturnValue(T t) {
+    public void setReturnValue(@NotNull T t) {
         returnValueHolder.setValue(t);
     }
 
+    @NotNull
     @Override
     public Optional<T> getReturnValue() {
         return returnValueHolder.getValue();
@@ -54,7 +57,7 @@ class NetworkFinisher<T> implements Finisher<T> {
     }
 
     @Override
-    public void shutdown(T t) {
+    public void shutdown(@NotNull T t) {
         returnValueHolder.setValue(t);
         processingThreadHolder.interruptHoldingThread();
     }

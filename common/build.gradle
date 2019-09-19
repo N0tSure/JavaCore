@@ -3,8 +3,11 @@ sourceCompatibility = '1.8'
 
 dependencies {
 
+    compileOnly 'org.jetbrains:annotations:17.0.0'
+
     compile "org.slf4j:slf4j-api:${rootProject.ext['com.artemsirosh.slf4jVersion']}"
     runtime "org.slf4j:slf4j-simple:${rootProject.ext['com.artemsirosh.slf4jVersion']}"
+
     compile "com.google.guava:guava:${rootProject.ext['com.artemsirosh.googleGuava']}"
 
     testCompile "junit:junit:${rootProject.ext['com.artemsirosh.junit4Version']}"

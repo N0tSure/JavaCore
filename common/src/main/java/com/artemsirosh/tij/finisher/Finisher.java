@@ -1,5 +1,7 @@
 package com.artemsirosh.tij.finisher;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
@@ -43,14 +45,14 @@ public interface Finisher<T> extends Callable<T> {
      * is {@code null}, it means that no return value has been set.
      * @param t finisher task return value
      */
-    void setReturnValue(T t);
+    void setReturnValue(@NotNull T t);
 
     /**
      * Return value, which previously been set. Returning not causes thread
      * waiting or sleeping, i.e. value will be returning immediately.
      * @return value
      */
-    Optional<T> getReturnValue();
+    @NotNull Optional<T> getReturnValue();
 
     /**
      * Immediately interrupt finisher, finisher returns value that it already
@@ -63,5 +65,5 @@ public interface Finisher<T> extends Callable<T> {
      * use provided one.
      * @param t return value
      */
-    void shutdown(T t);
+    void shutdown(@NotNull T t);
 }
