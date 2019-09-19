@@ -18,7 +18,7 @@ import java.util.Optional;
  *
  * @author Artem Sirosh 'ASir2089@gmail.com'
  */
-public class NetworkFinisher<T> implements Finisher<T> {
+class NetworkFinisher<T> implements Finisher<T> {
 
     private static final String RESPONSE_PAYLOAD_TEMPLATE = "<!doctype html>" +
             "<head><meta charset=\"UTF-8\" content=\"text/html\"/>" +
@@ -32,7 +32,7 @@ public class NetworkFinisher<T> implements Finisher<T> {
     private final ProcessingThreadHolder processingThreadHolder;
     private final Charset defaultCharset = StandardCharsets.UTF_8;
 
-    public NetworkFinisher(InetSocketAddress address) {
+    NetworkFinisher(InetSocketAddress address) {
         this.address = address;
         this.returnValueHolder = new ReturnValueHolder<>();
         this.processingThreadHolder = new ProcessingThreadHolder();

@@ -39,7 +39,7 @@ class BlockingReturnValueHolder<T> {
      * Take value for return and unlocks semaphore.
      * @param t a value
      */
-    public void setValue(T t) {
+    void setValue(T t) {
         synchronized (this) {
             this.value = t;
         }
