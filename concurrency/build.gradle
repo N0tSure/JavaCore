@@ -11,9 +11,9 @@ test {
 dependencies {
     def mockitoVersion = '2.28.2'
     def junitVersion = rootProject.ext['com.artemsirosh.junitJupiterVersion']
-    def junitPlatformVersion = rootProject.ext['com.artemsirosh.junitPlatformVersion']
 
     compile project(':generics')
+    compile project(':enumerated')
     testCompile "org.junit.jupiter:junit-jupiter-params:${junitVersion}"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
     testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoVersion

@@ -5,11 +5,11 @@ package com.artemsirosh.tij.concurrency;
  *
  * @author Artem Sirosh 'ASir2089@gmail.com'
  */
-class SerialNumberGenerator {
+public class SerialNumberGenerator {
 
     private volatile int serialNumber = 0;
 
-    synchronized int nextSerialNumber() {
+    public synchronized int nextSerialNumber() {
         return serialNumber++;
     }
 }
