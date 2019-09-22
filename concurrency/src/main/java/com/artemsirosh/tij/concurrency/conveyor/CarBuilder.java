@@ -17,13 +17,20 @@ public class CarBuilder {
         final ExecutorService executor = Executors.newCachedThreadPool();
         final BlockingQueue<Vehicle>
                 chassisQueue = new LinkedBlockingQueue<>(),
-                vehicleQueue = new LinkedBlockingQueue<>();
+                assembledQueue = new LinkedBlockingQueue<>(),
+                finishedQueue = new LinkedBlockingQueue<>();
         final RobotPool robotPool = new RobotPool(EnumSet.allOf(Robot.class));
+
         executor.execute(Robot.ENGINE_ROBOT);
         executor.execute(Robot.TRANSMISSION_ROBOT);
         executor.execute(Robot.DRIVE_TRAIN);
-        executor.execute(new Reporter(vehicleQueue));
-        executor.execute(new Assembler(chassisQueue, vehicleQueue, robotPool));
+        executor.execute(Robot.ON_BOARD_ELECTRONICS_INSTALLATION_ROBOT);
+        executor.execute(Robot.INTERIOR_ASSEMBLY_ROBOT);
+        executor.execute(Robot.EXTERIOR_SUITE_INSTALL_ROBOT);
+
+        executor.execute(new Reporter(finishedQueue));
+        executor.execute(new MainAssembler(chassisQueue, assembledQueue, robotPool));
+        executor.execute(new FinishingAssembler(assembledQueue, finishedQueue, robotPool));
         executor.execute(new ChassisBuilder(chassisQueue, new SerialNumberGenerator()));
 
         Finisher<?> finisher = Finishers.newJMXFinisher("CarBuilder");

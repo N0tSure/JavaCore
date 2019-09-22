@@ -10,44 +10,44 @@ import java.util.function.Consumer;
  *
  * @author Artem Sirosh 'ASir2089@gmail.com'
  */
-class Assembler implements Runnable {
+abstract class Assembler implements Runnable {
 
-    private final BlockingQueue<Vehicle> chassisQueue;
-    private final BlockingQueue<Vehicle> vehicleQueue;
+    private final BlockingQueue<Vehicle> incomingQueue;
+    private final BlockingQueue<Vehicle> outComingQueue;
     private final RobotPool pool;
     private final CyclicBarrier cyclicBarrier;
 
     private Vehicle vehicle;
 
-    Assembler(BlockingQueue<Vehicle> chassisQueue, BlockingQueue<Vehicle> vehicleQueue, RobotPool pool) {
-        this.chassisQueue = chassisQueue;
-        this.vehicleQueue = vehicleQueue;
+    Assembler(BlockingQueue<Vehicle> incomingQueue, BlockingQueue<Vehicle> outComingQueue, RobotPool pool) {
+        this.incomingQueue = incomingQueue;
+        this.outComingQueue = outComingQueue;
         this.pool = pool;
         this.cyclicBarrier = new CyclicBarrier(4);
     }
 
-    @Override
-    public void run() {
-        try {
-            while (!Thread.interrupted()) {
-                synchronized (this) {
-                    vehicle = chassisQueue.take();
-                    System.out.println(this + ": " + vehicle + " acquired.");
-                }
+    BlockingQueue<Vehicle> getIncomingQueue() {
+        return incomingQueue;
+    }
 
-                pool.hire(Robot.ENGINE_ROBOT, this);
-                pool.hire(Robot.TRANSMISSION_ROBOT, this);
-                pool.hire(Robot.DRIVE_TRAIN, this);
-                cyclicBarrier.await();
+    BlockingQueue<Vehicle> getOutComingQueue() {
+        return outComingQueue;
+    }
 
-                vehicleQueue.put(vehicle);
-            }
-        } catch (InterruptedException exc) {
-            // way to stop task
-        } catch (BrokenBarrierException exc) {
-            System.out.println(this + ": a " +
-                    "broken barrier.");
-        }
+    RobotPool getPool() {
+        return pool;
+    }
+
+    CyclicBarrier getCyclicBarrier() {
+        return cyclicBarrier;
+    }
+
+    Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
     void processVehicle(Consumer<Vehicle> vehicleProcessor, Robot robot) throws InterruptedException {

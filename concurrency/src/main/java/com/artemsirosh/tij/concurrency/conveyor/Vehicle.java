@@ -14,6 +14,9 @@ class Vehicle {
     private String engineIdentityNumber;
     private String transmissionIdentityNumber;
     private String driveTrainIdentityNumber;
+    private String onBoardElectronicsNumber;
+    private String interiorQualityCheck;
+    private String exteriorSuiteNumber;
 
     Vehicle(String identityNumber) {
         this.identityNumber = identityNumber;
@@ -47,6 +50,30 @@ class Vehicle {
         this.driveTrainIdentityNumber = driveTrainIdentityNumber;
     }
 
+    String getOnBoardElectronicsNumber() {
+        return onBoardElectronicsNumber;
+    }
+
+    void setOnBoardElectronicsNumber(String onBoardElectronicsNumber) {
+        this.onBoardElectronicsNumber = onBoardElectronicsNumber;
+    }
+
+    String getInteriorQualityCheck() {
+        return interiorQualityCheck;
+    }
+
+    void setInteriorQualityCheck(String interiorQualityCheck) {
+        this.interiorQualityCheck = interiorQualityCheck;
+    }
+
+    String getExteriorSuiteNumber() {
+        return exteriorSuiteNumber;
+    }
+
+    void setExteriorSuiteNumber(String exteriorSuiteNumber) {
+        this.exteriorSuiteNumber = exteriorSuiteNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,12 +82,15 @@ class Vehicle {
         return identityNumber.equals(vehicle.identityNumber) &&
                 Objects.equals(engineIdentityNumber, vehicle.engineIdentityNumber) &&
                 Objects.equals(transmissionIdentityNumber, vehicle.transmissionIdentityNumber) &&
-                Objects.equals(driveTrainIdentityNumber, vehicle.driveTrainIdentityNumber);
+                Objects.equals(driveTrainIdentityNumber, vehicle.driveTrainIdentityNumber) &&
+                Objects.equals(onBoardElectronicsNumber, vehicle.onBoardElectronicsNumber) &&
+                Objects.equals(interiorQualityCheck, vehicle.interiorQualityCheck) &&
+                Objects.equals(exteriorSuiteNumber, vehicle.exteriorSuiteNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identityNumber, engineIdentityNumber, transmissionIdentityNumber, driveTrainIdentityNumber);
+        return Objects.hash(identityNumber, engineIdentityNumber, transmissionIdentityNumber, driveTrainIdentityNumber, onBoardElectronicsNumber, interiorQualityCheck, exteriorSuiteNumber);
     }
 
     @Override
@@ -70,6 +100,9 @@ class Vehicle {
                 .add("engine = " + engineIdentityNumber)
                 .add("transmission = " + transmissionIdentityNumber)
                 .add("drive train = " + driveTrainIdentityNumber)
+                .add("interior quality check = " + interiorQualityCheck)
+                .add("on-board electronics = " + onBoardElectronicsNumber)
+                .add("an exterior suite = " + exteriorSuiteNumber)
                 .toString();
     }
 }
