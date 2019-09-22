@@ -10,13 +10,13 @@ import com.artemsirosh.tij.enumerated.menu.Food;
 final class Order {
 
     private final int id;
-    private final Customer customer;
+    private final Guest guest;
     private final Food item;
     private final Waiter waiter;
 
-    Order(int id, Customer customer, Food item, Waiter waiter) {
+    Order(int id, Guest guest, Food item, Waiter waiter) {
         this.id = id;
-        this.customer = customer;
+        this.guest = guest;
         this.item = item;
         this.waiter = waiter;
     }
@@ -29,12 +29,12 @@ final class Order {
         return waiter;
     }
 
-    Customer getCustomer() {
-        return customer;
+    Guest getGuest() {
+        return guest;
     }
 
     @Override
     public String toString() {
-        return "Order #" + id + ": " + item + " for " + customer + " served by " + waiter + ".";
+        return "Order #" + id + ": " + item + " for " + guest + " served by " + waiter + ".";
     }
 }

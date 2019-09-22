@@ -1,7 +1,6 @@
 package com.artemsirosh.tij.concurrency.restaurant;
 
-import com.artemsirosh.tij.enumerated.menu.Food;
-
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -21,14 +20,6 @@ class Waiter implements Runnable {
         this.filledOrders = filledOrders;
     }
 
-    void placeOrder(Customer customer, Food food) {
-        try {
-            orderQueue.placeOrder(customer, food, this);
-        } catch (InterruptedException exc) {
-            System.out.println(this + ": placing of order interrupted.");
-        }
-    }
-
     @Override
     public void run() {
         try {
@@ -46,6 +37,14 @@ class Waiter implements Runnable {
 
     void fillOrder(Plate plate) throws InterruptedException {
         filledOrders.put(plate);
+    }
+
+    void placeOrder(List<Dish> dishes) {
+        try {
+            orderQueue.placeOrder(dishes, this);
+        } catch (InterruptedException exc) {
+            System.out.println(this + ": placing of order ticket interrupted.");
+        }
     }
 
     @Override

@@ -1,16 +1,13 @@
 package com.artemsirosh.tij.concurrency.restaurant;
 
-import com.artemsirosh.tij.enumerated.menu.Food;
-
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.IntSupplier;
+import java.util.stream.IntStream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -22,22 +19,36 @@ import static java.util.Objects.requireNonNull;
 class Restaurant implements Runnable {
 
     private final List<Waiter> waiters;
-    private final Function<Waiter, Customer> customerGenerator;
-    private final Consumer<Customer> customerExecutor;
+    private final IntSupplier guestIdSupplier;
+    private final Consumer<Guest> guestExecutor;
     private final Random random;
 
     static RestaurantBuilder builder() {
         return new RestaurantBuilder();
     }
 
+    private static void createGuests(
+            Waiter waiter,
+            int size,
+            IntSupplier guestIdSupplier,
+            Consumer<Guest> guestExecutor
+    ) {
+        final Table table = new Table(waiter, size);
+        IntStream.generate(guestIdSupplier)
+                .limit(size)
+                .mapToObj(id -> new Guest(id, table, new SynchronousQueue<>()))
+                .forEach(guestExecutor);
+    }
+
     private Restaurant(
             List<Waiter> waiters,
-            Function<Waiter, Customer> customerGenerator, Consumer<Customer> customerExecutor,
+            IntSupplier guestIdSupplier,
+            Consumer<Guest> guestExecutor,
             Random random
     ) {
         this.waiters = waiters;
-        this.customerGenerator = customerGenerator;
-        this.customerExecutor = customerExecutor;
+        this.guestIdSupplier = guestIdSupplier;
+        this.guestExecutor = guestExecutor;
         this.random = random;
     }
 
@@ -46,7 +57,7 @@ class Restaurant implements Runnable {
         try {
             while (!Thread.interrupted()) {
                 final Waiter waiter = waiters.get(random.nextInt(waiters.size()));
-                customerExecutor.accept(customerGenerator.apply(waiter));
+                createGuests(waiter, 1 + random.nextInt(5), guestIdSupplier, guestExecutor);
                 TimeUnit.MILLISECONDS.sleep(100);
             }
         } catch (InterruptedException exc) {
@@ -58,8 +69,8 @@ class Restaurant implements Runnable {
 
     static class RestaurantBuilder {
         private List<Waiter> waiters;
-        private Function<Waiter, Customer> customerGenerator;
-        private Consumer<Customer> customerExecutor;
+        private IntSupplier guestIdSupplier;
+        private Consumer<Guest> guestExecutor;
         private Random random;
 
         RestaurantBuilder setWaiters(List<Waiter> waiters) {
@@ -72,22 +83,21 @@ class Restaurant implements Runnable {
             return this;
         }
 
-        RestaurantBuilder setCustomerExecutor(ExecutorService executor) {
-            this.customerExecutor = executor::execute;
+        RestaurantBuilder setGuestExecutor(ExecutorService executor) {
+            this.guestExecutor = executor::execute;
             return this;
         }
 
-        RestaurantBuilder setCustomerGenerator(IntSupplier intSupplier) {
-            this.customerGenerator =
-                    waiter -> new Customer(intSupplier.getAsInt(), waiter, new SynchronousQueue<>());
+        RestaurantBuilder setIdSupplier(IntSupplier intSupplier) {
+            this.guestIdSupplier = intSupplier;
             return this;
         }
 
         Restaurant build() {
             return new Restaurant(
                     requireNonNull(waiters),
-                    requireNonNull(customerGenerator),
-                    requireNonNull(customerExecutor),
+                    requireNonNull(guestIdSupplier),
+                    requireNonNull(guestExecutor),
                     requireNonNull(random)
             );
         }

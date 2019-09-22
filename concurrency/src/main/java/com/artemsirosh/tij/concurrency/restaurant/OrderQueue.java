@@ -1,7 +1,6 @@
 package com.artemsirosh.tij.concurrency.restaurant;
 
-import com.artemsirosh.tij.enumerated.menu.Food;
-
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.function.IntSupplier;
 
@@ -10,18 +9,20 @@ import java.util.function.IntSupplier;
  *
  * @author Artem Sirosh 'ASir2089@gmail.com'
  */
-public class OrderQueue {
+class OrderQueue {
 
     private final BlockingQueue<Order> orders;
     private final IntSupplier orderIdSupplier;
 
-    public OrderQueue(BlockingQueue<Order> orders, IntSupplier orderIdSupplier) {
+    OrderQueue(BlockingQueue<Order> orders, IntSupplier orderIdSupplier) {
         this.orders = orders;
         this.orderIdSupplier = orderIdSupplier;
     }
 
-    void placeOrder(Customer customer, Food food, Waiter waiter) throws InterruptedException {
-        orders.put(new Order(orderIdSupplier.getAsInt(), customer, food, waiter));
+    void placeOrder(final List<Dish> dishes, final Waiter waiter) throws InterruptedException {
+        for (final Dish dish : dishes) {
+            orders.put(new Order(orderIdSupplier.getAsInt(), dish.getGuest(), dish.getItem(), waiter));
+        }
     }
 
     Order nextOrder() throws InterruptedException {

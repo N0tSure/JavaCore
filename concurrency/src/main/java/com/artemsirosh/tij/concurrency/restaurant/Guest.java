@@ -10,15 +10,15 @@ import java.util.concurrent.SynchronousQueue;
  *
  * @author Artem Sirosh 'ASir2089@gmail.com'
  */
-class Customer implements Runnable {
+class Guest implements Runnable {
 
     private final int id;
-    private final Waiter waiter;
+    private final Table table;
     private final SynchronousQueue<Plate> plateSetting;
 
-    Customer(int id, Waiter waiter, SynchronousQueue<Plate> plateSetting) {
+    Guest(int id, Table table, SynchronousQueue<Plate> plateSetting) {
         this.id = id;
-        this.waiter = waiter;
+        this.table = table;
         this.plateSetting = plateSetting;
     }
 
@@ -31,7 +31,8 @@ class Customer implements Runnable {
         try {
             for (final Course course : Course.values()) {
                 final Food food = course.randomSelection();
-                waiter.placeOrder(this, food);
+                System.out.println(this + " want " + food);
+                table.placeOrder(this, food);
                 System.out.println(this + ": eating " + plateSetting.take());
             }
         } catch (InterruptedException exc) {
@@ -41,6 +42,6 @@ class Customer implements Runnable {
 
     @Override
     public String toString() {
-        return "Customer #" + id;
+        return "Guest #" + id;
     }
 }

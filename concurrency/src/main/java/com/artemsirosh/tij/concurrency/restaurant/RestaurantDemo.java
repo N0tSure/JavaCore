@@ -7,7 +7,6 @@ import com.artemsirosh.tij.finisher.Finishers;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
-import java.util.function.IntSupplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -34,8 +33,8 @@ public class RestaurantDemo {
                 .forEach(executor::execute);
 
         final Restaurant restaurant = Restaurant.builder()
-                .setCustomerExecutor(executor)
-                .setCustomerGenerator(serialNumberGen::nextSerialNumber)
+                .setGuestExecutor(executor)
+                .setIdSupplier(serialNumberGen::nextSerialNumber)
                 .setRandom(random)
                 .setWaiters(waiters)
                 .build();

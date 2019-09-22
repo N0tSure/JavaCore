@@ -19,8 +19,8 @@ final class Plate {
         this.food = food;
     }
 
-    Customer getCustomer() {
-        return order.getCustomer();
+    Guest getCustomer() {
+        return order.getGuest();
     }
 
     Food getFood() {
