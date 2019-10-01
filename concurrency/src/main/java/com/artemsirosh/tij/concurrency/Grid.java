@@ -33,6 +33,10 @@ class Grid<T> {
         this.gridStore = gridStore;
     }
 
+    Grid(Grid<T> grid) {
+        this(grid.elementsNumber, grid.genesNumbers, grid.gridStore);
+    }
+
     int getElementsNumber() {
         return elementsNumber;
     }
@@ -45,7 +49,7 @@ class Grid<T> {
         return genesNumbers;
     }
 
-    void setGene(int elementIndex, int geneIndex, Consumer<T> mutator) {
-        mutator.accept(this.getGene(elementIndex, geneIndex));
+    void setGene(int elementIndex, int geneIndex, Function<T, T> mutator) {
+        gridStore[elementIndex][geneIndex] = mutator.apply(getGene(elementIndex, geneIndex));
     }
 }

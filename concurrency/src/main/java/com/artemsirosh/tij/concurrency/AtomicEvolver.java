@@ -16,10 +16,12 @@ public class AtomicEvolver implements Callable<Long> {
 
     private long counter;
 
-    private static void updateValue(AtomicInteger gene, int oldValue, int newValue) {
+    private static AtomicInteger updateValue(AtomicInteger gene, int oldValue, int newValue) {
         if (!gene.compareAndSet(oldValue, newValue)) {
             System.out.println("Old value changed from: " + oldValue);
         }
+
+        return gene;
     }
 
     AtomicEvolver(Grid<AtomicInteger> grid, Random random) {
@@ -38,8 +40,9 @@ public class AtomicEvolver implements Callable<Long> {
                 final int newValue = (oldValue + grid.getGene(previous, i).get() + grid.getGene(next, i).get()) / 3;
                 grid.setGene(element, i, gene -> updateValue(gene, oldValue, newValue));
 
-                counter++;
             }
+
+            counter++;
         }
 
         return counter;

@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -22,14 +22,24 @@ public class FastSimulation {
                 elementsNumber, genesNumber,
                 (e, g) -> new AtomicInteger[e][g], () -> new AtomicInteger(random.nextInt(1000))
         );
+        final Grid<Integer> integerGrid = new SynchronizedGrid<>(
+                Grid.create(
+                        elementsNumber, genesNumber, (e, g) -> new Integer[e][g],
+                        () -> random.nextInt(1000)
+                )
+        );
 
-        simulation("Atomic", IntStream.range(0, 50).mapToObj(i -> new AtomicEvolver(atomicGrid, random)));
+        simulation("Atomic", () -> new AtomicEvolver(atomicGrid, random));
+        simulation("Simple", () -> new SimpleEvolver(integerGrid, random));
         System.out.println("End of simulation.");
     }
 
-    private static <T> void simulation(String evolverName, Stream<Callable<Long>> evolvers) throws InterruptedException {
+    private static void simulation(String evolverName, Supplier<Callable<Long>> evolversSupplier) throws InterruptedException {
         final ExecutorService executor = Executors.newCachedThreadPool();
-        final List<Future<Long>> results = evolvers.map(executor::submit).collect(Collectors.toList());
+        final List<Future<Long>> results = Stream.generate(evolversSupplier)
+                .limit(50)
+                .map(executor::submit)
+                .collect(Collectors.toList());
 
         TimeUnit.SECONDS.sleep(5);
         executor.shutdownNow();
