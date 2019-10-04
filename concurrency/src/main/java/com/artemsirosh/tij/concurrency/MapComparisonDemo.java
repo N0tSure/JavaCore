@@ -5,6 +5,7 @@ import com.artemsirosh.tij.finisher.Finishers;
 
 import java.util.Arrays;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 /**
@@ -14,9 +15,15 @@ import java.util.function.Consumer;
  */
 public class MapComparisonDemo {
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        final ExecutorService comparisonExecutor = Executors.newSingleThreadExecutor();
-        final ExecutorService testTaskExecutor = Executors.newFixedThreadPool(10);
-        final ExecutorService controlService = Executors.newSingleThreadExecutor();
+        final ExecutorService comparisonExecutor = Executors.newSingleThreadExecutor(
+                new NamingThreadFactory("ComparisonRunner")
+        );
+        final ExecutorService testTaskExecutor = Executors.newFixedThreadPool(
+                10, new NamingThreadFactory("TestRunner")
+        );
+        final ExecutorService controlService = Executors.newSingleThreadExecutor(
+                new NamingThreadFactory("ShutdownController")
+        );
         final Consumer<Runnable> testTaskExecutionConsumer = testTaskExecutor::execute;
         final Finisher<?> finisher = Finishers.newNetworkFinisher(4545);
         final Future<?> finisherFuture = controlService.submit(finisher);
@@ -52,6 +59,7 @@ public class MapComparisonDemo {
 
         try {
             if (!comparisonExecutor.awaitTermination(1, TimeUnit.MINUTES)) {
+                System.out.println("Wait for localhost:4545 signal.");
                 finisherFuture.get();
             }
         } finally {
@@ -61,5 +69,22 @@ public class MapComparisonDemo {
 
     private static void stopExecutors(ExecutorService... executors) {
         Arrays.stream(executors).forEach(ExecutorService::shutdownNow);
+    }
+
+    private static class NamingThreadFactory implements ThreadFactory {
+        private final String name;
+        private final AtomicLong counter;
+
+        private NamingThreadFactory(String name) {
+            this.name = name;
+            this.counter = new AtomicLong(0);
+        }
+
+        @Override
+        public Thread newThread(Runnable r) {
+            final Thread result = new Thread(r);
+            result.setName(String.format("%s #%s", name, counter.incrementAndGet()));
+            return result;
+        }
     }
 }
