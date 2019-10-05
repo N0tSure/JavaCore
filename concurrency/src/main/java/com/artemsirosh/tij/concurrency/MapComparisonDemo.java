@@ -56,6 +56,15 @@ public class MapComparisonDemo {
         comparisonExecutor.execute(
                 ReadWriteMapComparison.createUnFair(5, 5, testTaskExecutionConsumer)
         );
+        comparisonExecutor.execute(
+                ReadWriteMapComparison.createFair(10, 0, testTaskExecutionConsumer)
+        );
+        comparisonExecutor.execute(
+                ReadWriteMapComparison.createFair(9, 1, testTaskExecutionConsumer)
+        );
+        comparisonExecutor.execute(
+                ReadWriteMapComparison.createFair(5, 5, testTaskExecutionConsumer)
+        );
 
         try {
             if (!comparisonExecutor.awaitTermination(1, TimeUnit.MINUTES)) {
